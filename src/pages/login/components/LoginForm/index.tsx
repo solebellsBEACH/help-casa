@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import { Button, Container, ForgotLink, FormWrapper, IconWrapper, Input, InputField, RegisterLink, SignupText, Title } from "./styles";
+import { useRouter } from "next/router";
 
 export function LoginForm() {
+    const router = useRouter();
+
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
         console.log("Dados de Login:", { username, password });
+        router.push("/")
     };
 
     return (
