@@ -1,179 +1,378 @@
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { FaUser, FaLock } from "react-icons/fa";
-import { Button, Container, FormWrapper, IconWrapper, Input, InputField, RegisterLink, SignupText, Title } from "./styles";
-import { useRouter } from "next/router";
+import { FaUser } from "react-icons/fa";
+import axios from "axios";
+import {
+  Button,
+  Container,
+  ErrorMessage,
+  FormWrapper,
+  IconWrapper,
+  Input,
+  InputField,
+  RegisterLink,
+  SignupText,
+  Title,
+} from "./styles"; // Supondo que você tenha estilizações básicas.
 
 type FormValues = {
-    name: string;
-    email: string;
-    address: string;
-    description: string;
-    phone: string;
-    rate: number;
-    hour_range: {
-        init_hour: string;
-        finish_hour: string;
-    };
-    available_services: string[];
-    experience: string;
+  Name: string;
+  Email: string;
+  PasswordDto: string;
+  Address: string;
+  Phone: string;
+  Experience?: string; // Opcional para empregador
+  AreaOfExpertise?: string; // Opcional para empregador
 };
 
 export function RegisterForm() {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<FormValues>();
-    const router = useRouter();
+  const [userType, setUserType] = useState<string | null>(null);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
-    const onSubmit: SubmitHandler<FormValues> = (data) => {
-        console.log("Dados de Registro:", data);
-        router.push("/");
-    };
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormValues>();
 
-    return (
-        <Container>
-            <FormWrapper>
-                <Title>Registrar</Title>
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <InputField>
-                        <IconWrapper>
-                            <FaUser />
-                        </IconWrapper>
-                        <Input
-                            type="text"
-                            placeholder="Nome Completo"
-                            {...register("name", { required: true })}
-                        />
-                        {errors.name && <span>Nome é obrigatório</span>}
-                    </InputField>
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    try {
+      const formData = {
+        ...data,
+        userType,
+      };
 
-                    <InputField>
-                        <IconWrapper>
-                            <FaUser />
-                        </IconWrapper>
-                        <Input
-                            type="email"
-                            placeholder="E-mail"
-                            {...register("email", { required: true })}
-                        />
-                        {errors.email && <span>E-mail é obrigatório</span>}
-                    </InputField>
+      const response = await axios.post(
+        "http://localhost:5289/api/auth/register",
+        formData
+      );
+      if (response.status) {
+        setStatusMessage("Usuário cadastrado com sucesso!");
+      } else {
+        setStatusMessage(null);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response && error.response.status === 409) {
+          setStatusMessage("Email já em uso.");
+        } else {
+          setStatusMessage("Erro ao cadastrar usuário.");
+        }
+      } else {
+        setStatusMessage("Erro de rede.");
+      }
+    }
+  };
 
-                    <InputField>
-                        <IconWrapper>
-                            <FaUser />
-                        </IconWrapper>
-                        <Input
-                            type="text"
-                            placeholder="Endereço"
-                            {...register("address", { required: true })}
-                        />
-                        {errors.address && <span>Endereço é obrigatório</span>}
-                    </InputField>
+  return (
+    <Container>
+      <FormWrapper>
+        <Title>Cadastrar</Title>
+        {statusMessage && <p>{statusMessage}</p>}
+        {!userType ? (
+          <>
+            <Button onClick={() => setUserType("employee")}>
+              Sou Empregado
+            </Button>
+            <Button onClick={() => setUserType("employer")}>
+              Sou Empregador
+            </Button>
+          </>
+        ) : (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            {/* Renderização condicional para Empregado */}
+            {userType === "employee" && (
+              <>
+                <InputField>
+                  <IconWrapper>
+                    <FaUser />
+                  </IconWrapper>
+                  <Input
+                    type="text"
+                    placeholder="Nome Completo"
+                    {...register("Name", { required: "Nome é obrigatório" })}
+                    style={{
+                      borderColor: errors.Name ? "red" : "initial", // Borda vermelha se houver erro
+                    }}
+                  />
+                  {errors.Name && (
+                    <span style={{ color: "red" }}>{errors.Name.message}</span>
+                  )}
+                </InputField>
 
-                    <InputField>
-                        <IconWrapper>
-                            <FaUser />
-                        </IconWrapper>
-                        <Input
-                            type="text"
-                            placeholder="Descrição"
-                            {...register("description", { required: true })}
-                        />
-                        {errors.description && <span>Descrição é obrigatória</span>}
-                    </InputField>
+                <InputField>
+                  <IconWrapper>
+                    <FaUser />
+                  </IconWrapper>
+                  <Input
+                    type="Email"
+                    placeholder="E-mail"
+                    {...register("Email", { required: "E-mail é obrigatório" })}
+                    style={{
+                      borderColor: errors.Email ? "red" : "initial",
+                    }}
+                  />
+                  {errors.Email && (
+                    <span style={{ color: "red" }}>{errors.Email.message}</span>
+                  )}
+                </InputField>
 
-                    <InputField>
-                        <IconWrapper>
-                            <FaUser />
-                        </IconWrapper>
-                        <Input
-                            type="text"
-                            placeholder="Telefone"
-                            {...register("phone", { required: true })}
-                        />
-                        {errors.phone && <span>Telefone é obrigatório</span>}
-                    </InputField>
+                {/* Campo de senha com mensagens fixas */}
+                <div style={{ color: "red", marginBottom: "8px" }}>
+                  A senha deve ter:
+                  <ul>
+                    <li>Entre 6 a 10 caracteres</li>
+                    <li>Ao menos uma letra maiúscula</li>
+                    <li>Ao menos um caractere especial</li>
+                  </ul>
+                </div>
 
-                    <InputField>
-                        <IconWrapper>
-                            <FaUser />
-                        </IconWrapper>
-                        <Input
-                            type="number"
-                            placeholder="Taxa (R$)"
-                            {...register("rate", { required: true })}
-                        />
-                        {errors.rate && <span>Taxa é obrigatória</span>}
-                    </InputField>
+                <InputField>
+                  <IconWrapper>
+                    <FaUser />
+                  </IconWrapper>
+                  <Input
+                    type="password"
+                    placeholder="Senha"
+                    {...register("PasswordDto", {
+                      required: "Senha é obrigatória",
+                      minLength: {
+                        value: 6,
+                        message: "A senha deve ter no mínimo 6 caracteres",
+                      },
+                      maxLength: {
+                        value: 10,
+                        message: "A senha deve ter no máximo 10 caracteres",
+                      },
+                      pattern: {
+                        value: /^(?=.*[A-Z])(?=.*[!@#$%^&*])/,
+                        message:
+                          "A senha deve conter ao menos 1 letra maiúscula e 1 caractere especial",
+                      },
+                    })}
+                    style={{
+                      borderColor: errors.PasswordDto ? "red" : "initial", // Borda vermelha se houver erro
+                    }}
+                  />
+                  {errors.PasswordDto && (
+                    <ErrorMessage>{errors.PasswordDto.message}</ErrorMessage>
+                  )}
+                </InputField>
 
-                    <InputField>
-                        <IconWrapper>
-                            <FaUser />
-                        </IconWrapper>
-                        <Input
-                            type="text"
-                            placeholder="Hora de Início"
-                            {...register("hour_range.init_hour", { required: true })}
-                        />
-                        {errors.hour_range?.init_hour && <span>Hora de início é obrigatória</span>}
-                    </InputField>
+                {/* Restante dos campos para empregado */}
+                <InputField>
+                  <IconWrapper>
+                    <FaUser />
+                  </IconWrapper>
+                  <Input
+                    type="text"
+                    placeholder="Endereço"
+                    {...register("Address", {
+                      required: "Endereço é obrigatório",
+                    })}
+                    style={{
+                      borderColor: errors.Address ? "red" : "initial",
+                    }}
+                  />
+                  {errors.Address && (
+                    <span style={{ color: "red" }}>
+                      {errors.Address.message}
+                    </span>
+                  )}
+                </InputField>
 
-                    <InputField>
-                        <IconWrapper>
-                            <FaUser />
-                        </IconWrapper>
-                        <Input
-                            type="text"
-                            placeholder="Hora de Término"
-                            {...register("hour_range.finish_hour", { required: true })}
-                        />
-                        {errors.hour_range?.finish_hour && <span>Hora de término é obrigatória</span>}
-                    </InputField>
+                <InputField>
+                  <IconWrapper>
+                    <FaUser />
+                  </IconWrapper>
+                  <Input
+                    type="text"
+                    placeholder="Telefone"
+                    {...register("Phone", {
+                      required: "Telefone é obrigatório",
+                    })}
+                    style={{
+                      borderColor: errors.Phone ? "red" : "initial",
+                    }}
+                  />
+                  {errors.Phone && (
+                    <span style={{ color: "red" }}>{errors.Phone.message}</span>
+                  )}
+                </InputField>
 
-                    <InputField>
-                        <IconWrapper>
-                            <FaUser />
-                        </IconWrapper>
-                        <select
-                            {...register("available_services", { required: true })}
-                            multiple
-                            style={{
-                                width: "100%",
-                                padding: "0.625rem 2.5rem 0.625rem 2.5rem",
-                                border: "1px solid #d1d5db",
-                                borderRadius: "0.5rem",
-                                fontSize: "1rem",
-                                color: "#374151",
-                                outline: "none",
-                            }}
-                        >
-                            <option value="Serviço 1">Serviço 1</option>
-                            <option value="Serviço 2">Serviço 2</option>
-                            <option value="Serviço 3">Serviço 3</option>
-                        </select>
-                        {errors.available_services && <span>Selecione ao menos um serviço</span>}
-                    </InputField>
+                <InputField>
+                  <IconWrapper>
+                    <FaUser />
+                  </IconWrapper>
+                  <Input
+                    type="text"
+                    placeholder="Área de Especialização"
+                    {...register("AreaOfExpertise", {
+                      required: "Área de especialização é obrigatória",
+                    })}
+                    style={{
+                      borderColor: errors.AreaOfExpertise ? "red" : "initial",
+                    }}
+                  />
+                  {errors.AreaOfExpertise && (
+                    <span style={{ color: "red" }}>
+                      {errors.AreaOfExpertise.message}
+                    </span>
+                  )}
+                </InputField>
 
-                    <InputField>
-                        <IconWrapper>
-                            <FaUser />
-                        </IconWrapper>
-                        <Input
-                            type="text"
-                            placeholder="Experiência"
-                            {...register("experience", { required: true })}
-                        />
-                        {errors.experience && <span>Experiência é obrigatória</span>}
-                    </InputField>
+                <InputField>
+                  <IconWrapper>
+                    <FaUser />
+                  </IconWrapper>
+                  <Input
+                    type="text"
+                    placeholder="Experiência"
+                    {...register("Experience", {
+                      required: "Experiência é obrigatória",
+                    })}
+                    style={{
+                      borderColor: errors.Experience ? "red" : "initial",
+                    }}
+                  />
+                  {errors.Experience && (
+                    <span style={{ color: "red" }}>
+                      {errors.Experience.message}
+                    </span>
+                  )}
+                </InputField>
+              </>
+            )}
 
-                    <Button type="submit">Registrar</Button>
+            {userType === "employer" && (
+              <>
+                {/* Renderização condicional para Empregador */}
+                <InputField>
+                  <IconWrapper>
+                    <FaUser />
+                  </IconWrapper>
+                  <Input
+                    type="text"
+                    placeholder="Nome Completo"
+                    {...register("Name", { required: "Nome é obrigatório" })}
+                    style={{
+                      borderColor: errors.Name ? "red" : "initial",
+                    }}
+                  />
+                  {errors.Name && (
+                    <span style={{ color: "red" }}>{errors.Name.message}</span>
+                  )}
+                </InputField>
 
-                    <SignupText>
-                        Já tem uma conta?{" "}
-                        <RegisterLink href="/login">Login</RegisterLink>
-                    </SignupText>
-                </form>
-            </FormWrapper>
-        </Container>
-    );
+                <InputField>
+                  <IconWrapper>
+                    <FaUser />
+                  </IconWrapper>
+                  <Input
+                    type="Email"
+                    placeholder="E-mail"
+                    {...register("Email", { required: "E-mail é obrigatório" })}
+                    style={{
+                      borderColor: errors.Email ? "red" : "initial",
+                    }}
+                  />
+                  {errors.Email && (
+                    <span style={{ color: "red" }}>{errors.Email.message}</span>
+                  )}
+                </InputField>
+
+                {/* Campo de senha com mensagens fixas */}
+                <div style={{ color: "red", marginBottom: "8px" }}>
+                  A senha deve ter:
+                  <ul>
+                    <li>Entre 6 a 10 caracteres</li>
+                    <li>Ao menos uma letra maiúscula</li>
+                    <li>Ao menos um caractere especial</li>
+                  </ul>
+                </div>
+
+                <InputField>
+                  <IconWrapper>
+                    <FaUser />
+                  </IconWrapper>
+                  <Input
+                    type="password" // Corrigido de PasswordDto para password
+                    placeholder="Senha"
+                    {...register("PasswordDto", {
+                      required: "Senha é obrigatória",
+                      minLength: {
+                        value: 6,
+                        message: "A senha deve ter no mínimo 6 caracteres",
+                      },
+                      maxLength: {
+                        value: 10,
+                        message: "A senha deve ter no máximo 10 caracteres",
+                      },
+                      pattern: {
+                        value: /^(?=.*[A-Z])(?=.*[!@#$%^&*])/,
+                        message:
+                          "A senha deve conter ao menos 1 letra maiúscula e 1 caractere especial",
+                      },
+                    })}
+                    style={{
+                      borderColor: errors.PasswordDto ? "red" : "initial",
+                    }}
+                  />
+                  {errors.PasswordDto && (
+                    <ErrorMessage>{errors.PasswordDto.message}</ErrorMessage>
+                  )}
+                </InputField>
+
+                <InputField>
+                  <IconWrapper>
+                    <FaUser />
+                  </IconWrapper>
+                  <Input
+                    type="text"
+                    placeholder="Endereço"
+                    {...register("Address", {
+                      required: "Endereço é obrigatório",
+                    })}
+                    style={{
+                      borderColor: errors.Address ? "red" : "initial",
+                    }}
+                  />
+                  {errors.Address && (
+                    <span style={{ color: "red" }}>
+                      {errors.Address.message}
+                    </span>
+                  )}
+                </InputField>
+
+                <InputField>
+                  <IconWrapper>
+                    <FaUser />
+                  </IconWrapper>
+                  <Input
+                    type="text"
+                    placeholder="Telefone"
+                    {...register("Phone", {
+                      required: "Telefone é obrigatório",
+                    })}
+                    style={{
+                      borderColor: errors.Phone ? "red" : "initial",
+                    }}
+                  />
+                  {errors.Phone && (
+                    <span style={{ color: "red" }}>{errors.Phone.message}</span>
+                  )}
+                </InputField>
+              </>
+            )}
+
+            <Button type="submit">Cadastrar</Button>
+            <SignupText>
+              Já tem uma conta?{" "}
+              <RegisterLink href="/login">Faça login</RegisterLink>
+            </SignupText>
+          </form>
+        )}
+      </FormWrapper>
+    </Container>
+  );
 }
-
-export default RegisterForm;
