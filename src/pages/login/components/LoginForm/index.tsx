@@ -25,7 +25,7 @@ export function LoginForm() {
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   const {
-    register, // Corrigido: usamos `register` em vez de `login`
+    register,
     handleSubmit,
     formState: { errors },
   } = useForm<FormValues>();
@@ -58,14 +58,16 @@ export function LoginForm() {
         <Title>Login</Title>
         {statusMessage && <p>{statusMessage}</p>}
         <form onSubmit={handleSubmit(onSubmit)}>
+          <label htmlFor="Email">E-mail</label>
           <InputField>
             <IconWrapper>
               <FaUser />
             </IconWrapper>
             <Input
-              type="email" // Corrigido: tipo deve ser 'email' com 'e' minúsculo
+              id="Email"
+              type="email"
               placeholder="E-mail"
-              {...register("Email", { required: "E-mail é obrigatório" })} // Corrigido: `register` em vez de `login`
+              {...register("Email", { required: "E-mail é obrigatório" })}
               style={{
                 borderColor: errors.Email ? "red" : "initial",
               }}
@@ -74,16 +76,16 @@ export function LoginForm() {
               <span style={{ color: "red" }}>{errors.Email.message}</span>
             )}
           </InputField>
-
+          <label htmlFor="password">Senha</label>
           <InputField>
             <IconWrapper>
               <FaLock />
             </IconWrapper>
             <Input
+              id="password"
               type="password"
               placeholder="Senha"
               {...register("PasswordDto", {
-                // Corrigido: `register` em vez de `login`
                 required: "Senha é obrigatória",
                 minLength: {
                   value: 6,
@@ -100,7 +102,7 @@ export function LoginForm() {
                 },
               })}
               style={{
-                borderColor: errors.PasswordDto ? "red" : "initial", // Borda vermelha se houver erro
+                borderColor: errors.PasswordDto ? "red" : "initial",
               }}
             />
             {errors.PasswordDto && (
