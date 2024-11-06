@@ -15,16 +15,8 @@ import {
   SignupText,
   Title,
 } from "./styles";
-
-type FormValues = {
-  Name: string;
-  Email: string;
-  PasswordDto: string;
-  Address: string;
-  Phone: string;
-  Experience?: string; // Opcional para empregador
-  AreaOfExpertise?: string; // Opcional para empregador
-};
+import { AuthService } from "@/pages/shared/services/auth.service";
+import { RegisterForm } from "@/pages/shared/dtos/auth";
 
 export function RegisterForm() {
   const [userType, setUserType] = useState<string | null>(null);
@@ -34,20 +26,17 @@ export function RegisterForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<RegisterForm>();
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
     try {
       const formData = {
         ...data,
         userType,
       };
 
-      const response = await axios.post(
-        "http://localhost:5289/api/auth/register",
-        formData
-      );
-      if (response.status) {
+      const response = await AuthService.onRegister(formData)
+      if (response) {
         setStatusMessage("Usuário cadastrado com sucesso!");
       } else {
         setStatusMessage(null);
@@ -204,7 +193,7 @@ export function RegisterForm() {
                       borderColor: errors.Phone ? "red" : "initial",
                     }}
                   >
-                    {(inputProps) => <Input {...inputProps} />}
+                    {(inputProps: any) => <Input {...inputProps} />}
                   </InputMask>
                   {errors.Phone && (
                     <span style={{ color: "red" }}>{errors.Phone.message}</span>
