@@ -15,11 +15,8 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
 import { ErrorMessage } from "@/pages/register/components/RegisterForm/styles";
-
-type FormValues = {
-  Email: string;
-  PasswordDto: string;
-};
+import { LoginFormDto } from "@/pages/shared/dtos/auth";
+import { AuthService } from "@/pages/shared/services/auth.service";
 
 export function LoginForm() {
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
@@ -28,15 +25,12 @@ export function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<LoginFormDto>();
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<LoginFormDto> = async (data) => {
     try {
-      const response = await axios.post(
-        "http://localhost:5289/api/auth/login",
-        data
-      );
-      if (response.status) {
+      const response = await AuthService.onLogin(data);
+      if (response) {
         setStatusMessage("Login realizado com sucesso!");
       } else {
         setStatusMessage(null);
@@ -117,7 +111,6 @@ export function LoginForm() {
           <SignupText>
             Não tem uma conta?{" "}
             <RegisterLink href="/register">Cadastrar</RegisterLink>{" "}
-            {/* Corrigido: link para 'Cadastrar' */}
           </SignupText>
         </form>
       </FormWrapper>

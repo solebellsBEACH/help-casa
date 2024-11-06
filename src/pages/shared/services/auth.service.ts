@@ -1,8 +1,8 @@
 import { AxiosResponse } from 'axios';
 import { apiInstance } from '../api/axios';
-import { RegisterForm } from '../dtos/auth';
+import { LoginFormDto, RegisterFormDto } from '../dtos/auth';
 
-async function onRegister(formData: RegisterForm): Promise<AxiosResponse<any, any> | undefined> {
+async function onRegister(formData: RegisterFormDto): Promise<AxiosResponse<any, any> | undefined> {
     try {
         const response = await apiInstance.post("/auth/register", formData)
         return response
@@ -10,6 +10,16 @@ async function onRegister(formData: RegisterForm): Promise<AxiosResponse<any, an
         console.error(error)
     }
 }
+
+async function onLogin(formData: LoginFormDto): Promise<AxiosResponse<any, any> | undefined> {
+    try {
+        const response = await apiInstance.post("/auth/login", formData)
+        return response
+    } catch (error) {
+        console.error(error)
+    }
+}
 export const AuthService = {
-    onRegister
+    onRegister,
+    onLogin
 }

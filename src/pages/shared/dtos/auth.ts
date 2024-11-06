@@ -1,4 +1,4 @@
-export type RegisterForm = {
+export type RegisterFormDto = {
     Name: string;
     Email: string;
     PasswordDto: string;
@@ -7,3 +7,8 @@ export type RegisterForm = {
     Experience?: string;
     AreaOfExpertise?: string;
 } & { userType: string | null }
+
+export type LoginFormDto = {
+    Email: string;
+    PasswordDto: string;
+}

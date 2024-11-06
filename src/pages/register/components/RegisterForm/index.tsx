@@ -16,16 +16,7 @@ import {
   Title,
 } from "./styles";
 import { AuthService } from "@/pages/shared/services/auth.service";
-
-type FormValues = {
-  Name: string;
-  Email: string;
-  PasswordDto: string;
-  Address: string;
-  Phone: string;
-  Experience?: string; // Opcional para empregador
-  AreaOfExpertise?: string; // Opcional para empregador
-};
+import { RegisterForm } from "@/pages/shared/dtos/auth";
 
 export function RegisterForm() {
   const [userType, setUserType] = useState<string | null>(null);
@@ -35,9 +26,9 @@ export function RegisterForm() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>();
+  } = useForm<RegisterForm>();
 
-  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
     try {
       const formData = {
         ...data,
