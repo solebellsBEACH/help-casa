@@ -15,6 +15,7 @@ import {
   SignupText,
   Title,
 } from "./styles";
+import { AuthService } from "@/pages/shared/services/auth.service";
 
 type FormValues = {
   Name: string;
@@ -43,11 +44,8 @@ export function RegisterForm() {
         userType,
       };
 
-      const response = await axios.post(
-        "http://localhost:5289/api/auth/register",
-        formData
-      );
-      if (response.status) {
+      const response = await AuthService.onRegister(formData)
+      if (response) {
         setStatusMessage("Usuário cadastrado com sucesso!");
       } else {
         setStatusMessage(null);
@@ -204,7 +202,7 @@ export function RegisterForm() {
                       borderColor: errors.Phone ? "red" : "initial",
                     }}
                   >
-                    {(inputProps) => <Input {...inputProps} />}
+                    {(inputProps: any) => <Input {...inputProps} />}
                   </InputMask>
                   {errors.Phone && (
                     <span style={{ color: "red" }}>{errors.Phone.message}</span>
