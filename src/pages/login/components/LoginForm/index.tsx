@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { FaUser, FaLock } from "react-icons/fa";
 import {
   Button,
@@ -17,10 +16,14 @@ import axios from "axios";
 import { ErrorMessage } from "@/pages/register/components/RegisterForm/styles";
 import { LoginFormDto } from "@/pages/shared/dtos/auth";
 import { AuthService } from "@/pages/shared/services/auth.service";
+import { useRouter } from "next/router";
+import { useUserContext } from "@/pages/shared/context/UserContext"; // Caminho para o contexto
+import { toast, Bounce } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export function LoginForm() {
-  const [statusMessage, setStatusMessage] = useState<string | null>(null);
-
+  const router = useRouter();
+  const { setEmail } = useUserContext(); // Obtenha o setEmail do contexto
   const {
     register,
     handleSubmit,
@@ -31,16 +34,53 @@ export function LoginForm() {
     try {
       const response = await AuthService.onLogin(data);
       if (response) {
-        setStatusMessage("Login realizado com sucesso!");
+        toast.success("Login realizado com sucesso!", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+          transition: Bounce,
+        });
+        setEmail(data.Email);
+        router.push("/profile");
       } else {
-        setStatusMessage(null);
+        toast.error("Erro ao realizar o login.", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+          transition: Bounce,
+        });
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response && error.response.status === 401) {
-          setStatusMessage("Senha ou E-mail incorretos.");
+          toast.error("Senha ou E-mail incorretos.", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            draggable: true,
+            theme: "colored",
+            transition: Bounce,
+          });
         } else {
-          setStatusMessage("Erro ao realizar o login,");
+          toast.error("Erro ao realizar o login.", {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            theme: "colored",
+            transition: Bounce,
+          });
         }
       }
     }
@@ -50,7 +90,6 @@ export function LoginForm() {
     <Container>
       <FormWrapper>
         <Title>Login</Title>
-        {statusMessage && <p>{statusMessage}</p>}
         <form onSubmit={handleSubmit(onSubmit)}>
           <label htmlFor="Email">E-mail</label>
           <InputField>
@@ -79,7 +118,7 @@ export function LoginForm() {
               id="password"
               type="password"
               placeholder="Senha"
-              {...register("PasswordDto", {
+              {...register("Password", {
                 required: "Senha é obrigatória",
                 minLength: {
                   value: 6,
@@ -96,15 +135,15 @@ export function LoginForm() {
                 },
               })}
               style={{
-                borderColor: errors.PasswordDto ? "red" : "initial",
+                borderColor: errors.Password ? "red" : "initial",
               }}
             />
-            {errors.PasswordDto && (
-              <ErrorMessage>{errors.PasswordDto.message}</ErrorMessage>
+            {errors.Password && (
+              <ErrorMessage>{errors.Password.message}</ErrorMessage>
             )}
           </InputField>
 
-          <ForgotLink href="#">Esqueceu sua senha?</ForgotLink>
+          <ForgotLink href="/forgot-password">Esqueceu sua senha?</ForgotLink>
 
           <Button type="submit">Login</Button>
 

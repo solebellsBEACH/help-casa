@@ -16,26 +16,26 @@ import {
   Title,
 } from "./styles";
 import { AuthService } from "@/pages/shared/services/auth.service";
-import { RegisterForm } from "@/pages/shared/dtos/auth";
+import { RegisterFormDto } from "@/pages/shared/dtos/auth";
 
 export function RegisterForm() {
-  const [userType, setUserType] = useState<string | null>(null);
+  const [userType, setuserType] = useState<string | null>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterForm>();
+  } = useForm<RegisterFormDto>();
 
-  const onSubmit: SubmitHandler<RegisterForm> = async (data) => {
+  const onSubmit: SubmitHandler<RegisterFormDto> = async (data) => {
     try {
       const formData = {
         ...data,
         userType,
       };
 
-      const response = await AuthService.onRegister(formData)
+      const response = await AuthService.onRegister(formData);
       if (response) {
         setStatusMessage("Usuário cadastrado com sucesso!");
       } else {
@@ -61,10 +61,10 @@ export function RegisterForm() {
         {statusMessage && <p>{statusMessage}</p>}
         {!userType ? (
           <>
-            <Button onClick={() => setUserType("employee")}>
+            <Button onClick={() => setuserType("employee")}>
               Sou Empregado
             </Button>
-            <Button onClick={() => setUserType("employer")}>
+            <Button onClick={() => setuserType("employer")}>
               Sou Empregador
             </Button>
           </>
@@ -130,7 +130,7 @@ export function RegisterForm() {
                     id="password"
                     type="password"
                     placeholder="Senha"
-                    {...register("PasswordDto", {
+                    {...register("Password", {
                       required: "Senha é obrigatória",
                       minLength: {
                         value: 6,
@@ -147,11 +147,11 @@ export function RegisterForm() {
                       },
                     })}
                     style={{
-                      borderColor: errors.PasswordDto ? "red" : "initial",
+                      borderColor: errors.Password ? "red" : "initial",
                     }}
                   />
-                  {errors.PasswordDto && (
-                    <ErrorMessage>{errors.PasswordDto.message}</ErrorMessage>
+                  {errors.Password && (
+                    <ErrorMessage>{errors.Password.message}</ErrorMessage>
                   )}
                 </InputField>
 
@@ -306,7 +306,7 @@ export function RegisterForm() {
                     id="password"
                     type="password"
                     placeholder="Senha"
-                    {...register("PasswordDto", {
+                    {...register("Password", {
                       required: "Senha é obrigatória",
                       minLength: {
                         value: 6,
@@ -323,11 +323,11 @@ export function RegisterForm() {
                       },
                     })}
                     style={{
-                      borderColor: errors.PasswordDto ? "red" : "initial",
+                      borderColor: errors.Password ? "red" : "initial",
                     }}
                   />
-                  {errors.PasswordDto && (
-                    <ErrorMessage>{errors.PasswordDto.message}</ErrorMessage>
+                  {errors.Password && (
+                    <ErrorMessage>{errors.Password.message}</ErrorMessage>
                   )}
                 </InputField>
                 <label htmlFor="Address">Endereço</label>
@@ -357,17 +357,19 @@ export function RegisterForm() {
                   <IconWrapper>
                     <FaUser />
                   </IconWrapper>
-                  <Input
-                    id="Phone"
-                    type="text"
-                    placeholder="Telefone"
+                  <InputMask
+                    mask="(99) 99999-9999"
                     {...register("Phone", {
                       required: "Telefone é obrigatório",
                     })}
+                    id="Phone"
+                    placeholder="(99) 99999-9999"
                     style={{
                       borderColor: errors.Phone ? "red" : "initial",
                     }}
-                  />
+                  >
+                    {(inputProps: any) => <Input {...inputProps} />}
+                  </InputMask>
                   {errors.Phone && (
                     <span style={{ color: "red" }}>{errors.Phone.message}</span>
                   )}
