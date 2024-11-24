@@ -2,10 +2,10 @@ import React, { useState } from "react";
 import { useRouter } from "next/router";
 import * as S from "./styles";
 import { AuthService } from "@/pages/shared/services/auth.service";
-import { toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { ResetPasswordDto } from "@/pages/shared/dtos/auth";
+import { toastConfig } from "@/pages/shared/utils/toast";
 
 // Estendendo o DTO para incluir confirmPassword
 type ExtendedResetPasswordDto = ResetPasswordDto & {
@@ -33,16 +33,7 @@ export const ForgotPasswordSoliForm = () => {
     const { newPassword, confirmPassword } = data;
 
     if (newPassword !== confirmPassword) {
-      toast.warning("As senhas não coincidem.", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toastConfig.warning("As senhas não coincidem.");
       return;
     }
 
@@ -50,29 +41,11 @@ export const ForgotPasswordSoliForm = () => {
       setLoading(true);
       if (token) {
         await AuthService.resetPassword(token as string, newPassword);
-        toast.success("Senha redefinida com sucesso!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "colored",
-          transition: Bounce,
-        });
+        toastConfig.success("Senha redefinida com sucesso!");
         router.push("/login");
       }
     } catch (error) {
-      toast.error("Erro ao redefinir a senha. Tente novamente.", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toastConfig.error("Erro ao redefinir a senha. Tente novamente.");
       console.error("Erro ao redefinir a senha:", error);
     } finally {
       setLoading(false);

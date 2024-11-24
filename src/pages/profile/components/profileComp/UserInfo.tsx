@@ -16,11 +16,10 @@ import {
 } from "./style";
 import { useRouter } from "next/router";
 import { useUserContext } from "@/pages/shared/context/UserContext";
-import { Bounce, toast } from "react-toastify";
+import { toastConfig } from "@/pages/shared/utils/toast";
 
 const UserInfo: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // Dados completos do perfil exibidos na tela
   const [profileData, setProfileData] = useState({
     id: 0,
     name: "",
@@ -38,7 +37,6 @@ const UserInfo: React.FC = () => {
     userType: "",
   });
 
-  // Apenas dados editáveis para o formulário
   const [editedProfileData, setEditedProfileData] = useState<UpdateProfileDTO>({
     name: "",
     email: "",
@@ -54,7 +52,6 @@ const UserInfo: React.FC = () => {
   const router = useRouter();
   const { email } = useUserContext();
 
-  // Função para carregar dados do perfil com base no e-mail
   const loadProfileData = async () => {
     if (!email || email === "") {
       console.error("Erro: E-mail não encontrado no contexto");
@@ -72,12 +69,10 @@ const UserInfo: React.FC = () => {
     }
   };
 
-  // Carregar dados ao montar o componente
   useEffect(() => {
     loadProfileData();
   }, []);
 
-  // Atualizar os dados apenas no estado de edição
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -87,7 +82,6 @@ const UserInfo: React.FC = () => {
     }));
   };
 
-  // Abrir o modal e copiar apenas os campos editáveis para edição
   const handleOpenModal = () => {
     setEditedProfileData({
       name: profileData.name,
@@ -103,43 +97,22 @@ const UserInfo: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  // Fechar o modal sem salvar alterações
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
 
-  // Salvar as alterações feitas no modal
   const handleSaveChanges = async () => {
     try {
-      // Enviar apenas os dados editáveis para o backend
       await ProfileService.updateProfile(editedProfileData);
       setProfileData((prevData) => ({
         ...prevData,
         ...editedProfileData,
       }));
-      toast.success("Dados salvos com sucesso!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-        transition: Bounce,
-      });
-      setIsModalOpen(false); // Fechar o modal após salvar
+      toastConfig.success("Dados salvos com sucesso!");
+      setIsModalOpen(false);
     } catch (error) {
       console.error("Erro ao salvar dados:", error);
-      toast.error("Erro ao salvar dados.", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toastConfig.error("Erro ao salvar dados.");
     }
   };
 
