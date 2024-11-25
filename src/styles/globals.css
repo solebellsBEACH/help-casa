@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import "./variables.css";
+@import "./components.css";
 
 body {
   color: var(--foreground);

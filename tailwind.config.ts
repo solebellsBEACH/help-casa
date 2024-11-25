@@ -11,6 +11,21 @@ const config: Config = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: "var(--primary)",
+        secondary: "var(--secondary)",
+        text: "var(--text-color)",
+        gray: {
+          DEFAULT: "var(--gray)",
+          dark: "var(--gray-dark)",
+        },
+        success: {
+          DEFAULT: "var(--success)",
+          dark: "var(--dark-success)",
+        },
+        danger: {
+          DEFAULT: "var(--danger)",
+          dark: "var(--dark-danger)",
+        },
       },
     },
     colors: {
