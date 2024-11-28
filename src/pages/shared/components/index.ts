@@ -1,5 +1,7 @@
-import Header from "./Header";
+import { HomeComponents } from "./home";
+import { SharedComponents } from "./shared";
 
 export const LibComponents = {
-    Header
+    SharedComponents,
+    HomeComponents
 }

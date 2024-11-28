@@ -5,9 +5,6 @@ const ImageBackground = styled(Image)`
     width: 100%;
     object-fit: cover;
     height: var(--banner-height);
-
-    position: absolute;
-    z-index: 10;
 `
 
 const Container = styled.div`
@@ -68,11 +65,6 @@ interface IBannerProps {
 export const Banner = ({ data, onSubmit }: IBannerProps) => {
 
     return <>
-        <ImageBackground src="/images/banner-image.png"
-            alt="Imagem"
-            width={500}
-            height={200}
-            priority />
         <Container>
             <Content>
                 <h1>{data.title}</h1>
@@ -80,5 +72,10 @@ export const Banner = ({ data, onSubmit }: IBannerProps) => {
                 <button onClick={onSubmit}>{data.buttonLabel}</button>
             </Content>
         </Container>
+        <ImageBackground src="/images/banner-image.png"
+            alt="Imagem"
+            width={500}
+            height={200}
+            priority />
     </>
 }
