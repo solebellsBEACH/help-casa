@@ -32,6 +32,10 @@ const Header = () => {
       label: "Chat",
       href: "/chat",
     },
+    {
+      label: "Assinaturas",
+      href: "/teladeplanos",
+    },
   ];
 
   const handleTabClick = (href: string) => {

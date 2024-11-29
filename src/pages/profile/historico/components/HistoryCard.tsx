@@ -1,4 +1,3 @@
-import Image from "next/image";
 import React, { useState } from "react";
 import { Button } from "../style";
 
@@ -14,8 +13,6 @@ interface HistoryCardProps {
 }
 
 const HistoryCard: React.FC<HistoryCardProps> = ({
-  userImage,
-  userName,
   userTitle,
   serviceType,
   serviceName,
@@ -31,16 +28,8 @@ const HistoryCard: React.FC<HistoryCardProps> = ({
 
   return (
     <div>
-      <Image
-        src={userImage}
-        alt={userName}
-        className="w-16 h-16 rounded-full object-cover"
-        width={100}
-        height={100}
-      />
       <div>
         <div>
-          <h2 className="text-lg font-semibold">{userName}</h2>
           <p>{userTitle}</p>
         </div>
         <div className="grid grid-cols-2 gap-4">

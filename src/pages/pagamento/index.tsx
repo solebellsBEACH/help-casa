@@ -10,6 +10,7 @@ import {
   FormWrapper,
 } from "./style";
 import { useRouter } from "next/router";
+import { LibComponents } from "../shared/components";
 
 export default function Escolha() {
   const [formaPagamento, setFormaPagamento] = useState<string>("");
@@ -25,29 +26,32 @@ export default function Escolha() {
   };
 
   return (
-    <EscolhaContainer>
-      <FormWrapper>
-        <Title>Escolha a forma de pagamento</Title>
-        <Form onSubmit={handleSubmit}>
-          <RadioContainer>
-            <RadioInput
-              value="cartao"
-              checked={formaPagamento === "cartao"}
-              onChange={() => setFormaPagamento("cartao")}
-            />
-            <Label>Cartão de Crédito</Label>
-          </RadioContainer>
-          <RadioContainer>
-            <RadioInput
-              value="pix"
-              checked={formaPagamento === "pix"}
-              onChange={() => setFormaPagamento("pix")}
-            />
-            <Label>Pix</Label>
-          </RadioContainer>
-          <Button type="submit">Continuar</Button>
-        </Form>
-      </FormWrapper>
-    </EscolhaContainer>
+    <>
+      <LibComponents.SharedComponents.Header />
+      <EscolhaContainer>
+        <FormWrapper>
+          <Title>Escolha a forma de pagamento</Title>
+          <Form onSubmit={handleSubmit}>
+            <RadioContainer>
+              <RadioInput
+                value="cartao"
+                checked={formaPagamento === "cartao"}
+                onChange={() => setFormaPagamento("cartao")}
+              />
+              <Label>Cartão de Crédito</Label>
+            </RadioContainer>
+            <RadioContainer>
+              <RadioInput
+                value="pix"
+                checked={formaPagamento === "pix"}
+                onChange={() => setFormaPagamento("pix")}
+              />
+              <Label>Pix</Label>
+            </RadioContainer>
+            <Button type="submit">Continuar</Button>
+          </Form>
+        </FormWrapper>
+      </EscolhaContainer>
+    </>
   );
 }

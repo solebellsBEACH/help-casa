@@ -4,6 +4,7 @@ import Activities from "./components/Service";
 import { Container, ProfileContainer } from "./style";
 import { useState, useEffect } from "react";
 import { ProfileService } from "@/pages/shared/services/profile.service";
+import { LibComponents } from "@/pages/shared/components";
 
 const Profile: NextPage = () => {
   const [userType, setUserType] = useState<string>("");
@@ -23,13 +24,16 @@ const Profile: NextPage = () => {
   }, []);
 
   return (
-    <Container>
-      <ProfileContainer>
-        <UserInfo />
-        {/* Condicionalmente renderiza o componente Activities com base no tipo de usuário */}
-        {userType !== "Empregado" && <Activities />}
-      </ProfileContainer>
-    </Container>
+    <>
+      <LibComponents.SharedComponents.Header />
+      <Container>
+        <ProfileContainer>
+          <UserInfo />
+          {/* Condicionalmente renderiza o componente Activities com base no tipo de usuário */}
+          {userType !== "Empregado" && <Activities />}
+        </ProfileContainer>
+      </Container>
+    </>
   );
 };
 
