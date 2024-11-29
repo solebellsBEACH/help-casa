@@ -1,4 +1,5 @@
-import { LibComponents } from "../shared/components";
+
+import { LibComponents } from "@/pages/shared/components";
 import ServiceProposalCard from "./components/ServiceProposalCard";
 import { Container, FormWrapper } from "./style";
 

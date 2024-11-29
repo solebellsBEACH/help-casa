@@ -9,8 +9,8 @@ import {
   FormWrapper,
 } from "./styles";
 import { useRouter } from "next/router";
-import { toastConfig } from "../shared/utils/toast";
 import "react-toastify/dist/ReactToastify.css";
+import { toastConfig } from "@/pages/shared/utils/toast";
 
 export default function Cartao() {
   const [titular, setTitular] = useState<string>("");
