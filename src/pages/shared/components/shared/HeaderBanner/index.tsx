@@ -1,9 +1,20 @@
 import { PiBuildingsBold } from "react-icons/pi";
 import { FaUserCircle } from "react-icons/fa";
 import { Container, LeftContent, RightContent, TabsList } from "./styles";
+import { Banner } from "../Banner";
 import { useRouter } from "next/router";
 
-const Header = ({ }) => {
+interface IHeaderProps {
+  bannerData: {
+    title: string;
+    description: string;
+    buttonLabel: string;
+    imageId: number;
+  };
+  onClickBanner: () => void;
+}
+
+const HeaderBanner = ({ bannerData, onClickBanner }: IHeaderProps) => {
   const router = useRouter();
   const tabsItens = [
     {
@@ -56,8 +67,10 @@ const Header = ({ }) => {
           </div>
         </RightContent>
       </Container>
+
+      <Banner data={bannerData} onSubmit={onClickBanner} />
     </>
   );
 };
 
-export default Header;
+export default HeaderBanner;
