@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import "./variables.css";
+@import "./components.css";
 
 body {
   color: var(--foreground);
@@ -14,4 +15,12 @@ body {
   .text-blalance {
     text-wrap: balance;
   }
+}
+
+.content-title{
+  font-weight: 600;
+  font-size: 2rem;
+  color: var(--gray-dark);
+
+  text-align: center;
 }

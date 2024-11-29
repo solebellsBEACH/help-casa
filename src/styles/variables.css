@@ -3,20 +3,22 @@
     --foreground: #171717;
     --primary: #D39530;
     --secondary: #D1C4B0;
+    --text-color: #9d6202;
+
+    --gray-dark: #212B36;
+    --gray: #637381;
+
 
     --success: #86AB7B;
     --dark-success: #5B7553;
 
     --danger: #DE7C66;
     --dark-danger: #DC4321;
-}
 
-/* @media (prefers-color-scheme: dark) {
-    :root {
-        --background: #0a0a0a;
-        --foreground: #ededed;
+    * {
+        transition: all 0.3s ease;
     }
-} */
+}
 
 body {
     background: var(--background);

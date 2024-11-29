@@ -5,8 +5,8 @@ import {
   SignupText,
 } from "@/pages/login/components/LoginForm/styles";
 import { AuthService } from "@/pages/shared/services/auth.service";
-import { toast, Bounce } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { toastConfig } from "@/pages/shared/utils/toast";
 
 export const ForgotPasswordForm: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -15,30 +15,11 @@ export const ForgotPasswordForm: React.FC = () => {
     e.preventDefault();
     try {
       await AuthService.sendForgotPasswordLink({ email });
-      toast.success("Link de redefinição de senha enviado para o e-mail!", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        theme: "colored",
-        transition: Bounce,
-      });
+      toastConfig.success("Link de redefinição de senha enviado para o e-mail!");
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
-      toast.error(
+      toastConfig.error(
         "Erro ao enviar o link de redefinição de senha. Tente novamente",
-        {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "colored",
-          transition: Bounce,
-        }
       );
       console.error(err);
     }

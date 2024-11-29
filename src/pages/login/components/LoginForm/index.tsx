@@ -17,13 +17,13 @@ import { ErrorMessage } from "@/pages/register/components/RegisterForm/styles";
 import { LoginFormDto } from "@/pages/shared/dtos/auth";
 import { AuthService } from "@/pages/shared/services/auth.service";
 import { useRouter } from "next/router";
-import { useUserContext } from "@/pages/shared/context/UserContext"; // Caminho para o contexto
-import { toast, Bounce } from "react-toastify";
+import { useUserContext } from "@/pages/shared/context/UserContext";
 import "react-toastify/dist/ReactToastify.css";
+import { toastConfig } from "@/pages/shared/utils/toast";
 
 export function LoginForm() {
   const router = useRouter();
-  const { setEmail } = useUserContext(); // Obtenha o setEmail do contexto
+  const { setEmail } = useUserContext();
   const {
     register,
     handleSubmit,
@@ -34,53 +34,18 @@ export function LoginForm() {
     try {
       const response = await AuthService.onLogin(data);
       if (response) {
-        toast.success("Login realizado com sucesso!", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "colored",
-          transition: Bounce,
-        });
+        toastConfig.success("Login realizado com sucesso!");
         setEmail(data.Email);
         router.push("/profile");
       } else {
-        toast.error("Erro ao realizar o login.", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          theme: "colored",
-          transition: Bounce,
-        });
+        toastConfig.error("Erro ao realizar o login.");
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         if (error.response && error.response.status === 401) {
-          toast.error("Senha ou E-mail incorretos.", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            draggable: true,
-            theme: "colored",
-            transition: Bounce,
-          });
+          toastConfig.error("Senha ou E-mail incorretos.");
         } else {
-          toast.error("Erro ao realizar o login.", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            theme: "colored",
-            transition: Bounce,
-          });
+          toastConfig.error("Erro ao realizar o login.");
         }
       }
     }
