@@ -1,13 +1,14 @@
+import { Service } from '@/store/features/servicesSlice';
 import React from 'react';
 import styled from 'styled-components';
 
 interface IItensListProps {
-    data: any[];
+    data: Service[];
     title?: string;
     fetchFunction?: () => void;
 }
 
-const ProductItem = ({ data }: { data: { name: string, description: string, price: number } }) => {
+const ProductItem = ({ data }: { data: Service }) => {
     return (
         <div className="max-w-sm rounded overflow-hidden shadow-lg item-product">
             <img className="w-full h-24 px-1 product-image" src="/images/product-image-example.png" />

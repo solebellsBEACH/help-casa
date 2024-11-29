@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { LibComponents } from "@/pages/shared/components";
+import { useSelector } from "react-redux";
+import { selectServicesState } from "@/store/features/servicesSlice";
 
 export const Content = styled.section`
   display: flex;
@@ -12,6 +14,9 @@ export const Content = styled.section`
 export default function BuscarVagaComponent() {
   const [searchName, setSearchName] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+
+  const { data, loading } = useSelector(selectServicesState)
+
   const totalPages = 5;
 
   const handlePageChange = (page: number) => {
@@ -35,34 +40,28 @@ export default function BuscarVagaComponent() {
     imageId: 0,
   };
 
-  const fakeData = {
-    name: "Product Example",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.",
-    price: 10.57,
-  };
-
-  const itensListData = Array.from({ length: 10 }, () => fakeData);
-
   return (
-    <div>
-      <LibComponents.SharedComponents.HeaderBanner
-        bannerData={bannerData}
-        onClickBanner={scrollToElement}
-      />
-      <Content>
-        <LibComponents.SharedComponents.SearchContent
-          setState={setSearchName}
-          state={searchName}
+    <>
+      {loading && <LibComponents.SharedComponents.LoadingPage />}
+      <div>
+        <LibComponents.SharedComponents.HeaderBanner
+          bannerData={bannerData}
+          onClickBanner={scrollToElement}
         />
-        <LibComponents.SharedComponents.ItensList data={itensListData} />
-        <LibComponents.SharedComponents.Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </Content>
-      <LibComponents.SharedComponents.Footer />
-    </div>
+        <Content>
+          <LibComponents.SharedComponents.SearchContent
+            setState={setSearchName}
+            state={searchName}
+          />
+          <LibComponents.SharedComponents.ItensList data={data} />
+          <LibComponents.SharedComponents.Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </Content>
+        <LibComponents.SharedComponents.Footer />
+      </div>
+    </>
   );
 }
