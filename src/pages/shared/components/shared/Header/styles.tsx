@@ -48,7 +48,7 @@ export const RigthContent = styled(Content)`
         margin-left: 0.5rem;
     }
 
-    @media (max-width: 426px) {
+    @media (max-width: 769px) {
         display: none;
     }
 `

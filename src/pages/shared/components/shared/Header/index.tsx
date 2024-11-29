@@ -2,6 +2,7 @@ import { PiBuildingsBold } from "react-icons/pi";
 import { FaUserCircle } from "react-icons/fa";
 import { Container, LeftContent, RigthContent, TabsList } from "./styles"
 import { Banner } from "../Banner";
+import Sidebar from "../Sidebar";
 
 interface IHeaderProps {
     bannerData: {
@@ -36,6 +37,7 @@ const Header = ({ bannerData, onClickBanner }: IHeaderProps) => {
     ]
 
     return <>
+        <Sidebar />
         <Container className="w-full">
             <LeftContent>
                 <PiBuildingsBold size={35} />
