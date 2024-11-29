@@ -11,6 +11,16 @@ const nextConfig = {
         hostname: "www.designi.com.br",
         pathname: "/images/**",
       },
+      {
+        protocol: "https",
+        hostname: "img.freepik.com",
+        pathname: "/**",
+      },
+      {
+        protocol: "https",
+        hostname: "cdn.pixabay.com",
+        pathname: "/photo/**",
+      },
     ],
   },
 };

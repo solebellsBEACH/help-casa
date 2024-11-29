@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import { apiInstance } from "../api/axios";
 import { ForgotPasswordDto, LoginFormDto, RegisterFormDto } from "../dtos/auth";
+import { User } from "../entities/Users";
 
 async function onRegister(
   formData: RegisterFormDto
@@ -18,7 +19,7 @@ async function onRegister(
 async function onLogin(
   formData: LoginFormDto
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-): Promise<AxiosResponse<any, any> | undefined> {
+): Promise<AxiosResponse<User>> {
   try {
     const response = await apiInstance.post("/auth/login", formData);
     return response;

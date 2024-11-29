@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 export const Container = styled.header`
   background: var(--primary);
-
   display: flex;
   justify-content: center;
   align-items: center;
@@ -76,4 +75,11 @@ export const TabsList = styled.section`
     font-weight: 600;
     color: var(--primary);
   }
+`;
+
+export const Avatar = styled.img`
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 30px;
 `;

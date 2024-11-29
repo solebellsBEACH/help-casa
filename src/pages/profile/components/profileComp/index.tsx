@@ -9,28 +9,28 @@ import {
 } from "./style";
 import { useRouter } from "next/router";
 import { useUserContext } from "@/pages/shared/context/UserContext";
+import { LibComponents } from "@/pages/shared/components";
 
 const Profile: NextPage = () => {
-  const { setEmail } = useUserContext();
+  const { logout } = useUserContext();
   const router = useRouter();
-  const handleLogout = () => {
-    setEmail("");
-    router.push("/auth/login");
-  };
 
   const handleHist = () => {
     router.push("/profile/historico");
   };
 
   return (
-    <Container>
-      <LogoutButton onClick={handleLogout}>Sair do Perfil</LogoutButton>
-      <HistoryButton onClick={handleHist}>Histórico</HistoryButton>
-      <ProfileContainer>
-        <UserInfo />
-        <Activities />
-      </ProfileContainer>
-    </Container>
+    <>
+      <LibComponents.SharedComponents.Header />
+      <Container>
+        <LogoutButton onClick={logout}>Sair do Perfil</LogoutButton>
+        <HistoryButton onClick={handleHist}>Histórico</HistoryButton>
+        <ProfileContainer>
+          <UserInfo />
+          <Activities />
+        </ProfileContainer>
+      </Container>
+    </>
   );
 };
 
