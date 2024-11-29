@@ -84,17 +84,15 @@ export default function Home() {
           <h1 className="content-title mt-10">
             Avaliações
             <div className="mt-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {reviews.map((review, i) => (
+              {[0, 1, 2, 3].map((e, i) => (
                 <section key={`avaliacao-${i}`}>
                   <div className="text-lg p-5 ml-4 rounded name-section bg-primary shadow-xl">
-                    {review.name}
+                    Nome aleatorio
                   </div>
-                  <Image
-                    src={review.image}
-                    alt={`Avatar de ${review.name}`}
+                  <img
+                    src="/images/product-image-example.png"
+                    alt="ddd"
                     className="avaliacao-img rounded"
-                    width={9000}
-                    height={9000}
                   />
                 </section>
               ))}

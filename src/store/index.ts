@@ -8,11 +8,13 @@ const store = configureStore({
     services: servicesReducer
   },
 });
-
-export interface RootState {
+export interface IRootState {
   application: ApplicationState,
   services: ServicesState
 }
+
+
+export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
 export default store;

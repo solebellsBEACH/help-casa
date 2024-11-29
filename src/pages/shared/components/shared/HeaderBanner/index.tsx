@@ -20,9 +20,7 @@ interface IHeaderProps {
 const HeaderBanner = ({ bannerData, onClickBanner }: IHeaderProps) => {
   const router = useRouter();
   const { user } = useUserContext();
-  if (!user) {
-    return <div>Carregando...</div>;
-  }
+
   const tabsItens = [
     {
       label: "Home",
@@ -71,11 +69,11 @@ const HeaderBanner = ({ bannerData, onClickBanner }: IHeaderProps) => {
           </TabsList>
           <div onClick={handleClick}>
             <Avatar
-              src={user.profilePicture || DEFAULT_AVATAR}
+              src={user?.profilePicture || DEFAULT_AVATAR}
               alt="User Avatar"
             />
             <section>
-              <h2>Olá {user.name}</h2>
+              <h2>Olá {user?.name}</h2>
               <p>Seja bem-vindo de volta</p>
             </section>
           </div>

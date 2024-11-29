@@ -1,8 +1,10 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LibComponents } from "@/pages/shared/components";
-import { useSelector } from "react-redux";
-import { selectServicesState } from "@/store/features/servicesSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchServices, selectServicesState } from "@/store/features/servicesSlice";
+import { ServiceService } from "@/pages/shared/services/service.service";
+import { AppDispatch } from "@/store";
 
 export const Content = styled.section`
   display: flex;
@@ -12,8 +14,11 @@ export const Content = styled.section`
 `;
 
 export default function BuscarVagaComponent() {
+
   const [searchName, setSearchName] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+
+  const dispatch = useDispatch<AppDispatch>();
 
   const { data, loading } = useSelector(selectServicesState)
 
@@ -24,6 +29,16 @@ export default function BuscarVagaComponent() {
       setCurrentPage(page);
     }
   };
+
+
+  useEffect(() => {
+    getServices()
+  }, [dispatch]);
+
+  const getServices = () => {
+    dispatch(fetchServices(searchName.length > 0 ? searchName : undefined));
+  }
+
 
   const scrollToElement = () => {
     const element = document.getElementById("servicos");
@@ -52,6 +67,7 @@ export default function BuscarVagaComponent() {
           <LibComponents.SharedComponents.SearchContent
             setState={setSearchName}
             state={searchName}
+            handleSearch={getServices}
           />
           <LibComponents.SharedComponents.ItensList data={data} />
           <LibComponents.SharedComponents.Pagination

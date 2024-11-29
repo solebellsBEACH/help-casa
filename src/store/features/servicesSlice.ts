@@ -1,12 +1,9 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '..';
-
-export interface Service {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
-}
+import { AxiosResponse } from 'axios';
+import { IRootState } from '..';
+import { apiInstance } from '@/pages/shared/api/axios';
+import { ServiceService } from '@/pages/shared/services/service.service';
+import { Service } from '@/pages/shared/entities/Service';
 
 export interface ServicesState {
     loading: boolean;
@@ -17,31 +14,17 @@ export interface ServicesState {
 const initialState: ServicesState = {
     loading: false,
     error: null,
-    data: [
-        { "id": 1, "name": "Manutenção", "description": "Serviço de manutenção geral", price: 0.4 },
-        { "id": 2, "name": "Limpeza", "description": "Serviço de limpeza profissional", price: 10.4 },
-        { "id": 3, "name": "Consultoria", "description": "Consultoria técnica especializada", price: 10.4 },
-        { "id": 1, "name": "Manutenção", "description": "Serviço de manutenção geral", price: 0.4 },
-        { "id": 2, "name": "Limpeza", "description": "Serviço de limpeza profissional", price: 10.4 },
-        { "id": 3, "name": "Consultoria", "description": "Consultoria técnica especializada", price: 10.4 },
-        { "id": 1, "name": "Manutenção", "description": "Serviço de manutenção geral", price: 0.4 },
-        { "id": 2, "name": "Limpeza", "description": "Serviço de limpeza profissional", price: 10.4 },
-        { "id": 3, "name": "Consultoria", "description": "Consultoria técnica especializada", price: 10.4 },
-    ],
+    data: [],
 };
 
-// Thunk para buscar serviços (simulação de chamada assíncrona)
-export const fetchServices = createAsyncThunk<Service[], void, { rejectValue: string }>(
+export const fetchServices = createAsyncThunk<any[], string | undefined, { rejectValue: string }>(
     'services/fetchServices',
-    async (_, { rejectWithValue }) => {
+    async (search, { rejectWithValue }) => {
         try {
-            const response = await fetch('/api/services'); // Substitua pela URL da sua API
-            if (!response.ok) {
-                throw new Error('Erro ao buscar serviços');
-            }
-            return await response.json();
+            const services = search ? await ServiceService.getServicesByName(search) : await ServiceService.getAllServices()
+            return services;
         } catch (error: any) {
-            return rejectWithValue(error.message);
+            return rejectWithValue(error.message || 'Erro desconhecido');
         }
     }
 );
@@ -55,6 +38,7 @@ const servicesSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
+        console.log(fetchServices.pending)
         builder
             .addCase(fetchServices.pending, (state) => {
                 state.loading = true;
@@ -74,10 +58,9 @@ const servicesSlice = createSlice({
 export const { clearError } = servicesSlice.actions;
 
 // Selectores
-export const selectServicesLoading = (state: RootState) => state.services.loading;
-export const selectServicesError = (state: RootState) => state.services.error;
-export const selectServicesData = (state: RootState) => state.services.data;
-
-export const selectServicesState = (state: RootState) => state.services;
+export const selectServicesLoading = (state: IRootState) => state.services.loading;
+export const selectServicesError = (state: IRootState) => state.services.error;
+export const selectServicesData = (state: IRootState) => state.services.data;
+export const selectServicesState = (state: IRootState) => state.services;
 
 export default servicesSlice.reducer;

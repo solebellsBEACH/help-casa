@@ -1,4 +1,4 @@
-import { Service } from '@/store/features/servicesSlice';
+import { Service } from '@/pages/shared/entities/Service';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -13,10 +13,10 @@ const ProductItem = ({ data }: { data: Service }) => {
         <div className="max-w-sm rounded overflow-hidden shadow-lg item-product">
             <img className="w-full h-24 px-1 product-image" src="/images/product-image-example.png" />
             <div className="px-6 py-4">
-                <span className="inline-block bg-gray-200 rounded-full text-sm font-semibold text-gray-700">$ {data.price}</span>
-                <div className="font-bold text-xl mb-2">{data.name}</div>
+                <span className="inline-block bg-gray-200 rounded-full text-sm font-semibold text-gray-700">$ {data.servicePrice}</span>
+                <div className="font-bold text-xl mb-2">{data.serviceName}</div>
                 <p className="text-gray-700 text-sm">
-                    {data.description}
+                    {data.serviceDescription}
                 </p>
                 <button className='bg-primary w-full my-2 rounded details-button'>Ver detalhes</button>
             </div>

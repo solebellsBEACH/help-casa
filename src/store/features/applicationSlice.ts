@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { RootState } from '..';
+import { IRootState } from '..';
+
 export interface ApplicationState {
   loading: boolean;
   error: string | null;
@@ -41,10 +42,10 @@ const applicationSlice = createSlice({
 export const { setLoading, setError, setTheme, setLanguage, setData } = applicationSlice.actions;
 
 // Selectores para acessar partes do estado
-export const selectLoading = (state: RootState) => state.application.loading;
-export const selectError = (state: RootState) => state.application.error;
-export const selectTheme = (state: RootState) => state.application.theme;
-export const selectLanguage = (state: RootState) => state.application.language;
-export const selectData = (state: RootState) => state.application.data;
+export const selectLoading = (state: IRootState) => state.application.loading;
+export const selectError = (state: IRootState) => state.application.error;
+export const selectTheme = (state: IRootState) => state.application.theme;
+export const selectLanguage = (state: IRootState) => state.application.language;
+export const selectData = (state: IRootState) => state.application.data;
 
 export default applicationSlice.reducer;

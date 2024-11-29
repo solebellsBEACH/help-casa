@@ -3,9 +3,10 @@ import React from "react";
 interface SearchContentProps {
   state: string;
   setState: React.Dispatch<React.SetStateAction<string>>;
+  handleSearch: () => void
 }
 
-const SearchContent: React.FC<SearchContentProps> = ({ state, setState }) => {
+const SearchContent: React.FC<SearchContentProps> = ({ state, setState, handleSearch }) => {
   return (
     <div className="bg-gray-100 rounded-lg w-full">
       {state.length ? (
@@ -16,8 +17,8 @@ const SearchContent: React.FC<SearchContentProps> = ({ state, setState }) => {
         </h1>
       )}
 
-      <div className="w-full mt-5">
-        <label className="block text-lg mb-2">Digite uma palavra-chave</label>
+      <div className=" mt-5 flex flex-col w-60">
+        <label className="block text-md mb-2">Digite uma palavra-chave</label>
         <input
           type="text"
           value={state}
@@ -25,6 +26,9 @@ const SearchContent: React.FC<SearchContentProps> = ({ state, setState }) => {
           placeholder="Digite sua pesquisa..."
           className="min-w-60 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
         />
+        <button
+          onClick={handleSearch}
+          className="bg-primary w-full mt-3 rounded details-button p-2 text-background text-sm">Pesquisar</button>
       </div>
     </div>
   );
