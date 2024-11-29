@@ -1,6 +1,10 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LibComponents } from "@/pages/shared/components";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchServices, selectServicesState } from "@/store/features/servicesSlice";
+import { ServiceService } from "@/pages/shared/services/service.service";
+import { AppDispatch } from "@/store";
 
 export const Content = styled.section`
   display: flex;
@@ -10,8 +14,14 @@ export const Content = styled.section`
 `;
 
 export default function BuscarVagaComponent() {
+
   const [searchName, setSearchName] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
+
+  const dispatch = useDispatch<AppDispatch>();
+
+  const { data, loading } = useSelector(selectServicesState)
+
   const totalPages = 5;
 
   const handlePageChange = (page: number) => {
@@ -19,6 +29,16 @@ export default function BuscarVagaComponent() {
       setCurrentPage(page);
     }
   };
+
+
+  useEffect(() => {
+    getServices()
+  }, [dispatch]);
+
+  const getServices = () => {
+    dispatch(fetchServices(searchName.length > 0 ? searchName : undefined));
+  }
+
 
   const scrollToElement = () => {
     const element = document.getElementById("servicos");
@@ -35,34 +55,29 @@ export default function BuscarVagaComponent() {
     imageId: 0,
   };
 
-  const fakeData = {
-    name: "Product Example",
-    description:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.",
-    price: 10.57,
-  };
-
-  const itensListData = Array.from({ length: 10 }, () => fakeData);
-
   return (
-    <div>
-      <LibComponents.SharedComponents.HeaderBanner
-        bannerData={bannerData}
-        onClickBanner={scrollToElement}
-      />
-      <Content>
-        <LibComponents.SharedComponents.SearchContent
-          setState={setSearchName}
-          state={searchName}
+    <>
+      {loading && <LibComponents.SharedComponents.LoadingPage />}
+      <div>
+        <LibComponents.SharedComponents.HeaderBanner
+          bannerData={bannerData}
+          onClickBanner={scrollToElement}
         />
-        <LibComponents.SharedComponents.ItensList data={itensListData} />
-        <LibComponents.SharedComponents.Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
-      </Content>
-      <LibComponents.SharedComponents.Footer />
-    </div>
+        <Content>
+          <LibComponents.SharedComponents.SearchContent
+            setState={setSearchName}
+            state={searchName}
+            handleSearch={getServices}
+          />
+          <LibComponents.SharedComponents.ItensList data={data} />
+          <LibComponents.SharedComponents.Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </Content>
+        <LibComponents.SharedComponents.Footer />
+      </div>
+    </>
   );
 }
