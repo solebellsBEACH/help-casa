@@ -18,10 +18,14 @@ const Profile: NextPage = () => {
     router.push("/login");
   };
 
+  const handleHist = () => {
+    router.push("/historico");
+  };
+
   return (
     <Container>
       <LogoutButton onClick={handleLogout}>Sair do Perfil</LogoutButton>
-      <HistoryButton>Histórico</HistoryButton>
+      <HistoryButton onClick={handleHist}>Histórico</HistoryButton>
       <ProfileContainer>
         <UserInfo />
         <Activities />

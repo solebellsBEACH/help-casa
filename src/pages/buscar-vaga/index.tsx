@@ -28,10 +28,10 @@ export default function BuscarVagaComponent() {
   };
 
   const bannerData = {
-    title: "Explore os filtros para buscar o perfil perfeito",
+    title: "Explore os filtros para buscar o serviço perfeito",
     description:
       "Encontre ou ofereça serviços domésticos com facilidade. Junte-se à comunidade de profissionais domésticos qualificados e proprietários satisfeitos.",
-    buttonLabel: "Explore Perfils",
+    buttonLabel: "Explore Serviços",
     imageId: 0,
   };
 
@@ -46,7 +46,7 @@ export default function BuscarVagaComponent() {
 
   return (
     <div>
-      <LibComponents.SharedComponents.Header
+      <LibComponents.SharedComponents.HeaderBanner
         bannerData={bannerData}
         onClickBanner={scrollToElement}
       />

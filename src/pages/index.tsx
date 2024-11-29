@@ -32,13 +32,13 @@ export default function Home() {
     title: "Conecte-se com os melhores profissionais nacionais",
     description:
       "Encontre ou ofereça serviços domésticos com facilidade. Junte-se à comunidade de profissionais domésticos qualificados e proprietários satisfeitos.",
-    buttonLabel: "Explore Perfils",
+    buttonLabel: "Explore Categorias",
     imageId: 1,
   };
 
   return (
     <div>
-      <LibComponents.SharedComponents.Header
+      <LibComponents.SharedComponents.HeaderBanner
         bannerData={bannerData}
         onClickBanner={scrollToElement}
       />
