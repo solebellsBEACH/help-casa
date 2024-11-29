@@ -12,42 +12,36 @@ import {
   Title,
 } from "./styles";
 import { SubmitHandler, useForm } from "react-hook-form";
-import axios from "axios";
 import { LoginFormDto } from "@/pages/shared/dtos/auth";
 import { AuthService } from "@/pages/shared/services/auth.service";
 import { useRouter } from "next/router";
-import { useUserContext } from "@/pages/shared/context/UserContext";
 import "react-toastify/dist/ReactToastify.css";
 import { toastConfig } from "@/pages/shared/utils/toast";
 import { ErrorMessage } from "@/pages/auth/register/components/RegisterForm/styles";
+import { useUserContext } from "@/pages/shared/context/UserContext";
 
 export function LoginForm() {
   const router = useRouter();
-  const { setEmail } = useUserContext();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginFormDto>();
 
+  const { setUser } = useUserContext();
+
   const onSubmit: SubmitHandler<LoginFormDto> = async (data) => {
     try {
       const response = await AuthService.onLogin(data);
       if (response) {
+        setUser(response.data); // Atualiza o contexto global com os dados do usuário
         toastConfig.success("Login realizado com sucesso!");
-        setEmail(data.Email);
         router.push("/profile");
-      } else {
-        toastConfig.error("Erro ao realizar o login.");
       }
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        if (error.response && error.response.status === 401) {
-          toastConfig.error("Senha ou E-mail incorretos.");
-        } else {
-          toastConfig.error("Erro ao realizar o login.");
-        }
-      }
+      toastConfig.error("Erro ao realizar o login.");
+      console.log(error);
     }
   };
 
@@ -121,5 +115,3 @@ export function LoginForm() {
     </Container>
   );
 }
-
-export default LoginForm;

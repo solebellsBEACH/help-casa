@@ -123,3 +123,25 @@ export const RegisterLink = styled(Link)`
     text-decoration: underline;
   }
 `;
+
+export const Select = styled.select`
+  background-color: #f3f4f6;
+  color: #4b5563;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+
+  &:focus {
+    border-color: #fbbf24;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(251, 191, 36, 0.5);
+  }
+
+  option {
+    background-color: #ffffff;
+    padding: 0.5rem;
+  }
+`;

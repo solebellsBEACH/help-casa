@@ -1,8 +1,11 @@
 import { PiBuildingsBold } from "react-icons/pi";
-import { FaUserCircle } from "react-icons/fa";
 import { Container, LeftContent, RightContent, TabsList } from "./styles";
 import { Banner } from "../Banner";
 import { useRouter } from "next/router";
+import { useUserContext } from "@/pages/shared/context/UserContext";
+import { Avatar } from "../Header/styles";
+
+const DEFAULT_AVATAR = "/default-avatar.png";
 
 interface IHeaderProps {
   bannerData: {
@@ -16,6 +19,10 @@ interface IHeaderProps {
 
 const HeaderBanner = ({ bannerData, onClickBanner }: IHeaderProps) => {
   const router = useRouter();
+  const { user } = useUserContext();
+  if (!user) {
+    return <div>Carregando...</div>;
+  }
   const tabsItens = [
     {
       label: "Home",
@@ -23,7 +30,7 @@ const HeaderBanner = ({ bannerData, onClickBanner }: IHeaderProps) => {
     },
     {
       label: "Buscar Servicos",
-      href: "/vaga/buscar",
+      href: "/servico/buscar",
     },
     {
       label: "Chat",
@@ -33,6 +40,10 @@ const HeaderBanner = ({ bannerData, onClickBanner }: IHeaderProps) => {
 
   const handleTabClick = (href: string) => {
     router.push(href);
+  };
+
+  const handleClick = () => {
+    router.push("/profile");
   };
 
   return (
@@ -58,10 +69,13 @@ const HeaderBanner = ({ bannerData, onClickBanner }: IHeaderProps) => {
               );
             })}
           </TabsList>
-          <div>
-            <FaUserCircle size={40} />
+          <div onClick={handleClick}>
+            <Avatar
+              src={user.profilePicture || DEFAULT_AVATAR}
+              alt="User Avatar"
+            />
             <section>
-              <h2>Olá Lucas</h2>
+              <h2>Olá {user.name}</h2>
               <p>Seja bem-vindo de volta</p>
             </section>
           </div>

@@ -26,3 +26,20 @@ export interface Employer {
   contractedServices: string[] | null;
   userType: string;
 }
+
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+  address: string;
+  phone: string;
+  profilePicture: string | null;
+  description: string | null;
+  rating: number;
+  availableTimeRange: string | null;
+  areaOfExpertise: string;
+  experience: string;
+  offeredServices: string | null;
+  userType: string;
+  subscription: boolean;
+}

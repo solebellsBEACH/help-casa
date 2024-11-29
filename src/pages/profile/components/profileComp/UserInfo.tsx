@@ -1,7 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { ProfileService } from "@/pages/shared/services/profile.service";
-import { AxiosResponse } from "axios";
-import { UpdateProfileDTO } from "@/pages/shared/dtos/profile";
+import React, { useState } from "react";
 import {
   UserInfoContainer,
   UserDetails,
@@ -14,86 +11,43 @@ import {
   ModalInput,
   ModalButton,
 } from "./style";
-import { useRouter } from "next/router";
 import { useUserContext } from "@/pages/shared/context/UserContext";
 import { toastConfig } from "@/pages/shared/utils/toast";
+import { ProfileService } from "@/pages/shared/services/profile.service";
+
+const DEFAULT_AVATAR = "/default-avatar.png";
 
 const UserInfo: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [profileData, setProfileData] = useState({
-    id: 0,
-    name: "",
-    email: "",
-    phone: "",
-    profilePicture: "",
-    description: "",
-    rating: 0,
-    offeredServices: [],
-    contractedServices: [],
-    availableTimeRange: "",
-    areaOfExpertise: "",
-    experience: "",
-    address: "",
-    userType: "",
+  const { user, setUser } = useUserContext();
+
+  // Estado local para os dados editados
+  const [editedProfileData, setEditedProfileData] = useState({
+    id: user?.id || 0,
+    name: user?.name || "",
+    email: user?.email || "",
+    address: user?.address || "",
+    phone: user?.phone || "",
+    profilePicture: user?.profilePicture || "",
+    description: user?.description || "",
+    rating: user?.rating || 0,
+    availableTimeRange: user?.availableTimeRange || "",
+    areaOfExpertise: user?.areaOfExpertise || "",
+    experience: user?.experience || "",
+    offeredServices: user?.offeredServices || "",
+    userType: user?.userType || "",
+    subscription: user?.subscription || false,
   });
-
-  const [editedProfileData, setEditedProfileData] = useState<UpdateProfileDTO>({
-    name: "",
-    email: "",
-    phone: "",
-    profilePicture: "",
-    description: "",
-    address: "",
-    areaOfExpertise: "",
-    experience: "",
-    availableTimeRange: "",
-  });
-
-  const router = useRouter();
-  const { email } = useUserContext();
-
-  const loadProfileData = async () => {
-    if (!email || email === "") {
-      console.error("Erro: E-mail não encontrado no contexto");
-      return router.push("/auth/login");
-    }
-
-    try {
-      const response: AxiosResponse = await ProfileService.getUserByEmail(
-        email
-      );
-      const userData = response.data;
-      setProfileData(userData);
-    } catch (error) {
-      console.error("Erro ao carregar dados do perfil:", error);
-    }
-  };
-
-  useEffect(() => {
-    loadProfileData();
-  }, []);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    setEditedProfileData((prevData: any) => ({
+    setEditedProfileData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
 
   const handleOpenModal = () => {
-    setEditedProfileData({
-      name: profileData.name,
-      email: profileData.email,
-      phone: profileData.phone,
-      profilePicture: profileData.profilePicture,
-      description: profileData.description,
-      address: profileData.address,
-      areaOfExpertise: profileData.areaOfExpertise,
-      experience: profileData.experience,
-      availableTimeRange: profileData.availableTimeRange,
-    });
     setIsModalOpen(true);
   };
 
@@ -103,18 +57,23 @@ const UserInfo: React.FC = () => {
 
   const handleSaveChanges = async () => {
     try {
-      await ProfileService.updateProfile(editedProfileData);
-      setProfileData((prevData) => ({
-        ...prevData,
-        ...editedProfileData,
-      }));
-      toastConfig.success("Dados salvos com sucesso!");
+      // Atualize os dados no contexto e no localStorage
+      const updatedUser = { ...user, ...editedProfileData };
+      setUser(updatedUser); // Atualiza o contexto
+      localStorage.setItem("user", JSON.stringify(updatedUser)); // Atualiza o localStorage
+      await ProfileService.updateProfile(updatedUser);
+
+      toastConfig.success("Dados atualizados com sucesso!");
       setIsModalOpen(false);
     } catch (error) {
-      console.error("Erro ao salvar dados:", error);
-      toastConfig.error("Erro ao salvar dados.");
+      console.error("Erro ao salvar alterações:", error);
+      toastConfig.error("Erro ao salvar alterações.");
     }
   };
+
+  if (!user) {
+    return <p>Carregando informações do perfil...</p>;
+  }
 
   return (
     <UserInfoContainer>
@@ -124,51 +83,41 @@ const UserInfo: React.FC = () => {
         Informações da Conta
       </h2>
       <UserDetails>
-        <Avatar src={profileData.profilePicture} alt="User Avatar" />
+        <Avatar src={user.profilePicture || DEFAULT_AVATAR} alt="User Avatar" />
         <div>
           <Details>
             <strong>Nome:</strong> <br />
-            <span>{profileData.name}</span>
+            <span>{user.name}</span>
           </Details>
           <Details>
             <strong>E-mail:</strong> <br />
-            <span>{profileData.email}</span>
+            <span>{user.email}</span>
           </Details>
           <Details>
             <strong>Telefone:</strong> <br />
-            <span>{profileData.phone}</span>
+            <span>{user.phone}</span>
           </Details>
           <Details>
-            <strong>Avaliação:</strong> <br />
-            <span>{profileData.rating}</span>
+            <strong>Descrição:</strong> <br />
+            <span>{user.description}</span>
           </Details>
-          {/* Exibe campos específicos conforme o tipo de usuário */}
-          {profileData.userType === "Empregado" ? (
+          {user.userType === "Empregado" && (
             <>
               <Details>
-                <strong>Descrição:</strong> <br />
-                <span>{profileData.description}</span>
-              </Details>
-              <Details>
                 <strong>Área de Especialização:</strong> <br />
-                <span>{profileData.areaOfExpertise}</span>
+                <span>{user.areaOfExpertise}</span>
               </Details>
               <Details>
                 <strong>Experiência:</strong> <br />
-                <span>{profileData.experience}</span>
+                <span>{user.experience}</span>
               </Details>
             </>
-          ) : (
-            <Details>
-              <strong>Descrição:</strong> <br />
-              <span>{profileData.description}</span>
-            </Details>
           )}
         </div>
       </UserDetails>
       <EditButton onClick={handleOpenModal}>Editar Perfil</EditButton>
 
-      {/* Modal para editar informações */}
+      {/* Modal de edição */}
       {isModalOpen && (
         <ModalBackground>
           <ModalContainer>
@@ -208,8 +157,7 @@ const UserInfo: React.FC = () => {
               onChange={handleInputChange}
               placeholder="URL da Foto de Perfil"
             />
-            {/* Campos adicionais para empregados */}
-            {profileData.userType === "Empregado" && (
+            {user.userType === "Empregado" && (
               <>
                 <ModalInput
                   type="text"
