@@ -1,4 +1,3 @@
-
 import { LibComponents } from "@/pages/shared/components";
 import ServiceProposalCard from "./components/ServiceProposalCard";
 import { Container, FormWrapper } from "./style";
@@ -10,18 +9,7 @@ const Home = () => {
       <Container>
         <div className="bg-gray-100 min-h-screen py-10">
           <FormWrapper>
-            <ServiceProposalCard
-              userImage="/images/user.jpg"
-              userName="João Silva"
-              serviceType=""
-              serviceName=""
-              date=""
-              time=""
-              address=""
-              description=""
-              tasks={[]}
-              value={0}
-            />
+            <ServiceProposalCard />
           </FormWrapper>
         </div>
       </Container>

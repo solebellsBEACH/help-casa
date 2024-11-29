@@ -30,13 +30,15 @@ const UserInfo: React.FC = () => {
   });
 
   const router = useRouter();
-  //   const { email } = useUserContext();
+  const { id } = router.query; // Obter o ID diretamente da URL
 
   const loadProfileData = async () => {
+    if (!id) return; // Garantir que o ID está disponível
+
     try {
-      const response: AxiosResponse = await ProfileService.getUserByEmail(
-        router.query.email as string
-      );
+      const response: AxiosResponse = await ProfileService.getUserById(
+        Number(id)
+      ); // Alterado para buscar pelo ID
       const userData = response.data;
       setProfileData(userData);
     } catch (error) {
@@ -45,9 +47,8 @@ const UserInfo: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!router.query.email) return;
     loadProfileData();
-  }, [router.query.email]);
+  }, [id]); // Recarregar os dados quando o ID mudar
 
   const handleRateProfile = () => {
     const rating = prompt("Avalie o perfil de 0 a 5 estrelas:");
@@ -56,11 +57,6 @@ const UserInfo: React.FC = () => {
     } else {
       alert("Por favor, insira uma avaliação válida entre 0 e 5.");
     }
-  };
-
-  const handleStartConversation = () => {
-    alert(`Iniciando conversa com ${profileData.name}.`);
-    // Aqui você pode redirecionar para a página de chat ou implementar a funcionalidade de chat.
   };
 
   return (
@@ -117,9 +113,6 @@ const UserInfo: React.FC = () => {
       <ActionButtonsContainer>
         <RatingButton onClick={handleRateProfile}>
           Avaliar Perfil (0-5)
-        </RatingButton>
-        <RatingButton onClick={handleStartConversation}>
-          Iniciar Conversa
         </RatingButton>
       </ActionButtonsContainer>
     </UserInfoContainer>
