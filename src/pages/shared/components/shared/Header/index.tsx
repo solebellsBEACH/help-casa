@@ -8,6 +8,7 @@ interface IHeaderProps {
         title: string;
         description: string;
         buttonLabel: string;
+        imageId: number;
     }
     onClickBanner: () => void
 }

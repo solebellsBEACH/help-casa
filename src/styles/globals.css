@@ -16,3 +16,11 @@ body {
     text-wrap: balance;
   }
 }
+
+.content-title{
+  font-weight: 600;
+  font-size: 2rem;
+  color: var(--gray-dark);
+
+  text-align: center;
+}

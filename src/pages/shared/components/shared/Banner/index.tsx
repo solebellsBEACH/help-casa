@@ -58,6 +58,7 @@ interface IBannerProps {
         title: string;
         description: string;
         buttonLabel: string;
+        imageId: number
     }
     onSubmit: () => void
 }
@@ -72,7 +73,7 @@ export const Banner = ({ data, onSubmit }: IBannerProps) => {
                 <button onClick={onSubmit}>{data.buttonLabel}</button>
             </Content>
         </Container>
-        <ImageBackground src="/images/banner-image.png"
+        <ImageBackground src={`/images/banner/banner-image-${data.imageId}.png`}
             alt="Imagem"
             width={500}
             height={200}

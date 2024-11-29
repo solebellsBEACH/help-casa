@@ -2,8 +2,8 @@ import React from 'react';
 import styled from 'styled-components';
 
 const FooterContainer = styled.footer`
-  background-color: var(--primary); /* Cinza escuro */
-  color: #f9fafb; /* Branco */
+  background-color: var(--primary);
+  color: #f9fafb;
   padding: 1.5rem 2rem;
   display: flex;
   justify-content: space-between;
