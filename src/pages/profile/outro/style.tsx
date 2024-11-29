@@ -4,7 +4,7 @@ export const Container = styled.div`
   max-width: 1200px;
   margin: 20px auto;
   padding: 20px;
-  background-color: #f6f7fb;
+  background: var(--secondary);
 `;
 
 export const LogoutButton = styled.button`

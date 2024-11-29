@@ -1,129 +1,37 @@
-import React, { useState, useEffect } from "react";
-import { ProfileService } from "@/pages/shared/services/profile.service";
-import { AxiosResponse } from "axios";
+import { NextPage } from "next";
+import UserInfo from "./components/UserInfo";
+import Activities from "./components/Activities";
 import {
-  UserInfoContainer,
-  UserDetails,
-  Avatar,
-  Details,
-  RatingButton,
-  ActionButtonsContainer,
+  Container,
+  LogoutButton,
+  HistoryButton,
+  ProfileContainer,
 } from "./style";
 import { useRouter } from "next/router";
+import { useUserContext } from "@/pages/shared/context/UserContext";
 
-const UserInfo: React.FC = () => {
-  const [profileData, setProfileData] = useState({
-    id: 0,
-    name: "",
-    email: "",
-    phone: "",
-    profilePicture: "",
-    description: "",
-    rating: 0,
-    offeredServices: [],
-    contractedServices: [],
-    availableTimeRange: "",
-    areaOfExpertise: "",
-    experience: "",
-    address: "",
-    userType: "",
-  });
-
+const Profile: NextPage = () => {
+  const { setEmail } = useUserContext();
   const router = useRouter();
-  //   const { email } = useUserContext();
-
-  const loadProfileData = async () => {
-    try {
-      const response: AxiosResponse = await ProfileService.getUserByEmail(
-        router.query.email as string
-      );
-      const userData = response.data;
-      setProfileData(userData);
-    } catch (error) {
-      console.error("Erro ao carregar dados do perfil:", error);
-    }
+  const handleLogout = () => {
+    setEmail("");
+    router.push("/login");
   };
 
-  useEffect(() => {
-    if (!router.query.email) return;
-    loadProfileData();
-  }, [router.query.email]);
-
-  const handleRateProfile = () => {
-    const rating = prompt("Avalie o perfil de 0 a 5 estrelas:");
-    if (rating && Number(rating) >= 0 && Number(rating) <= 5) {
-      alert(`Você avaliou este perfil com ${rating} estrelas.`);
-    } else {
-      alert("Por favor, insira uma avaliação válida entre 0 e 5.");
-    }
-  };
-
-  const handleStartConversation = () => {
-    alert(`Iniciando conversa com ${profileData.name}.`);
-    // Aqui você pode redirecionar para a página de chat ou implementar a funcionalidade de chat.
+  const handleHist = () => {
+    router.push("/historico");
   };
 
   return (
-    <UserInfoContainer>
-      <h2
-        style={{ marginBottom: "10px", fontSize: "1.5em", fontWeight: "bold" }}
-      >
-        Perfil de {profileData.name}
-      </h2>
-      <UserDetails>
-        <Avatar src={profileData.profilePicture} alt="User Avatar" />
-        <div>
-          <Details>
-            <strong>Nome:</strong> <br />
-            <span>{profileData.name}</span>
-          </Details>
-          <Details>
-            <strong>E-mail:</strong> <br />
-            <span>{profileData.email}</span>
-          </Details>
-          <Details>
-            <strong>Telefone:</strong> <br />
-            <span>{profileData.phone}</span>
-          </Details>
-          <Details>
-            <strong>Avaliação:</strong> <br />
-            <span>{profileData.rating}</span>
-          </Details>
-          {profileData.userType === "Empregado" ? (
-            <>
-              <Details>
-                <strong>Descrição:</strong> <br />
-                <span>{profileData.description}</span>
-              </Details>
-              <Details>
-                <strong>Área de Especialização:</strong> <br />
-                <span>{profileData.areaOfExpertise}</span>
-              </Details>
-              <Details>
-                <strong>Experiência:</strong> <br />
-                <span>{profileData.experience}</span>
-              </Details>
-            </>
-          ) : (
-            <Details>
-              <strong>Descrição:</strong> <br />
-              <span>{profileData.description}</span>
-            </Details>
-          )}
-        </div>
-      </UserDetails>
-
-      {/* Botões de ação */}
-      <ActionButtonsContainer>
-        <RatingButton onClick={handleRateProfile}>
-          Avaliar Perfil (0-5)
-        </RatingButton>
-        <RatingButton onClick={handleStartConversation}>
-          Iniciar Conversa
-        </RatingButton>
-      </ActionButtonsContainer>
-    </UserInfoContainer>
+    <Container>
+      <LogoutButton onClick={handleLogout}>Sair do Perfil</LogoutButton>
+      <HistoryButton onClick={handleHist}>Histórico</HistoryButton>
+      <ProfileContainer>
+        <UserInfo />
+        <Activities />
+      </ProfileContainer>
+    </Container>
   );
 };
 
-export default UserInfo;
+export default Profile;
