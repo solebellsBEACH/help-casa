@@ -47,6 +47,10 @@ export const RigthContent = styled(Content)`
     section {
         margin-left: 0.5rem;
     }
+
+    @media (max-width: 426px) {
+        display: none;
+    }
 `
 export const LeftContent = styled.div`
     width: 360px;
