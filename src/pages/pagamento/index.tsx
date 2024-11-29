@@ -18,9 +18,9 @@ export default function Escolha() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (formaPagamento === "cartao") {
-      router.push("/cartao");
+      router.push("/pagamento/cartao");
     } else if (formaPagamento === "pix") {
-      router.push("/pix");
+      router.push("/pagamento/pix");
     }
   };
 

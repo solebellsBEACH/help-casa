@@ -42,7 +42,7 @@ export const ForgotPasswordSoliForm = () => {
       if (token) {
         await AuthService.resetPassword(token as string, newPassword);
         toastConfig.success("Senha redefinida com sucesso!");
-        router.push("/login");
+        router.push("/auth/login");
       }
     } catch (error) {
       toastConfig.error("Erro ao redefinir a senha. Tente novamente.");
