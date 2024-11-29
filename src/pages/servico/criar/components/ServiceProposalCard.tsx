@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import { ButtonAccept, ButtonDecline, Input, TextArea, Select } from "../style";
 import Image from "next/image";
 import { ServiceService } from "@/pages/shared/services/service.service";
+import { useUserContext } from "@/pages/shared/context/UserContext";
 
-interface ServiceProposalCardProps {
-  userImage: string;
-  userName: string;
-}
+const DEFAULT_AVATAR = "/default-avatar.png";
 
 const categories = [
   "Babysitter",
@@ -17,10 +15,8 @@ const categories = [
   "Limpeza e organização",
 ];
 
-const ServiceProposalCard: React.FC<ServiceProposalCardProps> = ({
-  userImage,
-  userName,
-}) => {
+const ServiceProposalCard = () => {
+  const { user } = useUserContext();
   const [formData, setFormData] = useState({
     serviceType: "",
     serviceName: "",
@@ -62,15 +58,16 @@ const ServiceProposalCard: React.FC<ServiceProposalCardProps> = ({
 
     try {
       const newService = {
-        employerId: 1, // ID do empregador (substituir com o real)
+        employerId: user?.id || 1, // ID do empregador (obtido do contexto)
         ServiceName: formData.serviceName,
         ServiceDescription: formData.description,
         ServicePrice: parseFloat(formData.value.toString()),
         Location: formData.address,
         Category: formData.serviceType,
-        dateTime: `${formData.date}T${formData.time}:00Z`,
+        dateTime: `${formData.date}T${formData.time}:00Z`, // Formatação de data e hora
       };
 
+      // Chamada para criar o serviço
       const response = await ServiceService.createService(newService);
       alert("Serviço criado com sucesso!");
       console.log("Serviço criado:", response);
@@ -88,14 +85,14 @@ const ServiceProposalCard: React.FC<ServiceProposalCardProps> = ({
       <h1 className="text-xl font-semibold mb-6">Informação do Serviço</h1>
       <div className="flex items-start gap-6 mb-6">
         <Image
-          src={userImage}
-          alt={userName}
+          src={user?.profilePicture || DEFAULT_AVATAR}
+          alt={DEFAULT_AVATAR}
           className="w-16 h-16 rounded-full object-cover"
           width={100}
           height={100}
         />
         <div>
-          <h2 className="text-lg font-semibold">{userName}</h2>
+          <h2 className="text-lg font-semibold">{user?.name}</h2>
         </div>
       </div>
       <div className="space-y-4">

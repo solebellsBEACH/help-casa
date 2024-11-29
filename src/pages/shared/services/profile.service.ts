@@ -8,10 +8,23 @@ async function getUserByEmail(
   email: string
 ): Promise<AxiosResponse<Employee | Employer>> {
   try {
-    const response = await apiInstance.get(`/Profile/user/${email}`);
+    const response = await apiInstance.get(`/Profile/user/email/${email}`);
     return response;
   } catch (error) {
     console.error("Erro ao obter usuário por e-mail:", error);
+    throw error;
+  }
+}
+
+// Função para buscar o usuário por ID, podendo ser Employee ou Employer
+async function getUserById(
+  userId: number
+): Promise<AxiosResponse<Employee | Employer>> {
+  try {
+    const response = await apiInstance.get(`/Profile/user/id/${userId}`);
+    return response;
+  } catch (error) {
+    console.error("Erro ao obter usuário por ID:", error);
     throw error;
   }
 }
@@ -30,5 +43,6 @@ async function updateProfile(
 
 export const ProfileService = {
   getUserByEmail,
+  getUserById,
   updateProfile,
 };

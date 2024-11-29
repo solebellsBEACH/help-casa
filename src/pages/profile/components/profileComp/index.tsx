@@ -1,6 +1,6 @@
 import { NextPage } from "next";
 import UserInfo from "./UserInfo";
-import Activities from "./Activities";
+import Activities from "./Services";
 import {
   Container,
   LogoutButton,
@@ -12,7 +12,7 @@ import { useUserContext } from "@/pages/shared/context/UserContext";
 import { LibComponents } from "@/pages/shared/components";
 
 const Profile: NextPage = () => {
-  const { logout } = useUserContext();
+  const { logout, user } = useUserContext();
   const router = useRouter();
 
   const handleHist = () => {
@@ -27,7 +27,8 @@ const Profile: NextPage = () => {
         <HistoryButton onClick={handleHist}>Histórico</HistoryButton>
         <ProfileContainer>
           <UserInfo />
-          <Activities />
+          {user?.userType === "Empregador" && <Activities />}{" "}
+          {/* Condicional para renderizar o Activities */}
         </ProfileContainer>
       </Container>
     </>

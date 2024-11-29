@@ -19,7 +19,7 @@ export const ServiceService = {
 async function createService(data: CreateServiceDto): Promise<Service> {
   try {
     const response: AxiosResponse<Service> = await apiInstance.post(
-      "/api/Service",
+      "/Service",
       data
     );
     return response.data;
@@ -36,7 +36,7 @@ async function acceptService(
 ): Promise<Service> {
   try {
     const response: AxiosResponse<Service> = await apiInstance.post(
-      `/api/Service/accept/${serviceId}`,
+      `/Service/accept/${serviceId}`,
       employeeId
     );
     return response.data;
@@ -50,7 +50,7 @@ async function acceptService(
 async function getServiceById(id: number): Promise<Service> {
   try {
     const response: AxiosResponse<Service> = await apiInstance.get(
-      `/api/Service/${id}`
+      `/Service/${id}`
     );
     return response.data;
   } catch (error) {
@@ -63,7 +63,7 @@ async function getServiceById(id: number): Promise<Service> {
 async function getAllServices(): Promise<Service[]> {
   try {
     const response: AxiosResponse<Service[]> = await apiInstance.get(
-      "/api/Service"
+      "/Service"
     );
     return response.data;
   } catch (error) {
@@ -76,7 +76,7 @@ async function getAllServices(): Promise<Service[]> {
 async function getServicesByCategory(category: string): Promise<Service[]> {
   try {
     const response: AxiosResponse<Service[]> = await apiInstance.get(
-      `/api/Service/category/${category}`
+      `/Service/category/${category}`
     );
     return response.data;
   } catch (error) {
@@ -89,7 +89,7 @@ async function getServicesByCategory(category: string): Promise<Service[]> {
 async function getServicesByName(name: string): Promise<Service[]> {
   try {
     const response: AxiosResponse<Service[]> = await apiInstance.get(
-      `/api/Service/name/${name}`
+      `/Service/name/${name}`
     );
     return response.data;
   } catch (error) {
@@ -102,7 +102,7 @@ async function getServicesByName(name: string): Promise<Service[]> {
 async function getServicesByPrice(price: number): Promise<Service[]> {
   try {
     const response: AxiosResponse<Service[]> = await apiInstance.get(
-      `/api/Service/price/${price}`
+      `/Service/price/${price}`
     );
     return response.data;
   } catch (error) {
@@ -115,7 +115,7 @@ async function getServicesByPrice(price: number): Promise<Service[]> {
 async function getServicesByAuthor(employerId: number): Promise<Service[]> {
   try {
     const response: AxiosResponse<Service[]> = await apiInstance.get(
-      `/api/Service/author/${employerId}`
+      `/Service/author/${employerId}`
     );
     return response.data;
   } catch (error) {
