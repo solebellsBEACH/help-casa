@@ -9,6 +9,7 @@ import {
   BackButton,
 } from "./style";
 import { useRouter } from "next/router";
+import { LibComponents } from "@/pages/shared/components";
 
 export default function Pix() {
   const router = useRouter();
@@ -22,15 +23,18 @@ export default function Pix() {
   };
 
   return (
-    <PixContainer>
-      <FormWrapper>
-        <Title>Pagamento com Pix</Title>
-        <QRCodeWrapper>
-          <QRCode value="google.com.br" />
-        </QRCodeWrapper>
-        <BackButton onClick={handleBack}>Voltar</BackButton>
-        <Button onClick={handleHome}>Home</Button>
-      </FormWrapper>
-    </PixContainer>
+    <>
+      <LibComponents.SharedComponents.Header />
+      <PixContainer>
+        <FormWrapper>
+          <Title>Pagamento com Pix</Title>
+          <QRCodeWrapper>
+            <QRCode value="google.com.br" />
+          </QRCodeWrapper>
+          <BackButton onClick={handleBack}>Voltar</BackButton>
+          <Button onClick={handleHome}>Home</Button>
+        </FormWrapper>
+      </PixContainer>
+    </>
   );
 }
