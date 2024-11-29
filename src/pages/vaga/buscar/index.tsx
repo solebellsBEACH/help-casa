@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState } from "react";
-import { LibComponents } from "../shared/components";
+import { LibComponents } from "@/pages/shared/components";
 
 export const Content = styled.section`
   display: flex;
