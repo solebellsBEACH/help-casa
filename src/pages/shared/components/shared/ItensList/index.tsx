@@ -9,14 +9,15 @@ interface IItensListProps {
 
 const ProductItem = ({ data }: { data: { name: string, description: string, price: number } }) => {
     return (
-        <div className="max-w-sm rounded overflow-hidden shadow-lg">
+        <div className="max-w-sm rounded overflow-hidden shadow-lg item-product">
             <img className="w-full h-24 px-1 product-image" src="/images/product-image-example.png" />
             <div className="px-6 py-4">
                 <span className="inline-block bg-gray-200 rounded-full text-sm font-semibold text-gray-700">$ {data.price}</span>
                 <div className="font-bold text-xl mb-2">{data.name}</div>
-                <p className="text-gray-700 text-base">
+                <p className="text-gray-700 text-sm">
                     {data.description}
                 </p>
+                <button className='bg-primary w-full my-2 rounded details-button'>Ver detalhes</button>
             </div>
         </div>
     );
@@ -25,6 +26,19 @@ const ProductItem = ({ data }: { data: { name: string, description: string, pric
 const Container = styled.div`
     .product-image {
         object-fit: cover;
+    }
+    .details-button{
+            color: white;
+            height:0px;
+    }
+    .item-product{
+        
+        &:hover{
+            margin: 0.2rem;
+            .details-button{
+                height: 2.5rem
+            }
+        }
     }
 `
 

@@ -23,6 +23,14 @@ export const Content = styled.section`
 export default function Home() {
 
   const [searchName, setSearchName] = useState("")
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 5;
+
+  const handlePageChange = (page: number) => {
+    if (page > 0 && page <= totalPages) {
+      setCurrentPage(page);
+    }
+  };
 
   const onSubmit = () => {
 
@@ -48,7 +56,11 @@ export default function Home() {
       <Content>
         <LibComponents.SharedComponents.SearchContent setState={setSearchName} state={searchName} />
         <LibComponents.SharedComponents.ItensList data={itensListData} />
+        <LibComponents.SharedComponents.Pagination currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange} />
       </Content>
+      <LibComponents.SharedComponents.Footer />
     </div>
   );
 }
