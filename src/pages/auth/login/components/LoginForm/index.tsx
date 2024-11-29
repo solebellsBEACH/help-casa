@@ -13,13 +13,13 @@ import {
 } from "./styles";
 import { SubmitHandler, useForm } from "react-hook-form";
 import axios from "axios";
-import { ErrorMessage } from "@/pages/register/components/RegisterForm/styles";
 import { LoginFormDto } from "@/pages/shared/dtos/auth";
 import { AuthService } from "@/pages/shared/services/auth.service";
 import { useRouter } from "next/router";
 import { useUserContext } from "@/pages/shared/context/UserContext";
 import "react-toastify/dist/ReactToastify.css";
 import { toastConfig } from "@/pages/shared/utils/toast";
+import { ErrorMessage } from "@/pages/auth/register/components/RegisterForm/styles";
 
 export function LoginForm() {
   const router = useRouter();
