@@ -3,7 +3,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { Container, LeftContent, RightContent, TabsList } from "./styles";
 import { useRouter } from "next/router";
 
-const Header = ({ }) => {
+const Header = ({}) => {
   const router = useRouter();
   const tabsItens = [
     {
@@ -12,7 +12,7 @@ const Header = ({ }) => {
     },
     {
       label: "Buscar Servicos",
-      href: "/buscar-vaga",
+      href: "/vaga/buscar",
     },
     {
       label: "Chat",

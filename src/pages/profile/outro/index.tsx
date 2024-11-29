@@ -15,11 +15,11 @@ const Profile: NextPage = () => {
   const router = useRouter();
   const handleLogout = () => {
     setEmail("");
-    router.push("/login");
+    router.push("/auth/login");
   };
 
   const handleHist = () => {
-    router.push("/historico");
+    router.push("/profile/historico");
   };
 
   return (

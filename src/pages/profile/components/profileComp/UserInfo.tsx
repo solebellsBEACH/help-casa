@@ -55,7 +55,7 @@ const UserInfo: React.FC = () => {
   const loadProfileData = async () => {
     if (!email || email === "") {
       console.error("Erro: E-mail não encontrado no contexto");
-      return router.push("/login");
+      return router.push("/auth/login");
     }
 
     try {

@@ -8,7 +8,6 @@ import {
   ActivityInfo,
   ViewMoreButton,
 } from "../style";
-import { Activity } from "../../profile/components/profileComp/types";
 
 const Activities: React.FC = () => {
   const [activities, setActivities] = useState<Activity[]>([]);

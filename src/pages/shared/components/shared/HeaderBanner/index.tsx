@@ -23,7 +23,7 @@ const HeaderBanner = ({ bannerData, onClickBanner }: IHeaderProps) => {
     },
     {
       label: "Buscar Servicos",
-      href: "/buscar-vaga",
+      href: "/vaga/buscar",
     },
     {
       label: "Chat",
