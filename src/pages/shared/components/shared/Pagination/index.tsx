@@ -21,6 +21,9 @@ const PageButton = styled.button<{ isActive?: boolean }>`
   border: none;
   cursor: pointer;
   font-size: 1rem;
+
+  @media (max-width: 426px) {  font-size: 0.8rem;}
+
   background-color: ${({ isActive }) => (isActive ? 'var(--primary)' : '#e5e7eb')};
   color: ${({ isActive }) => (isActive ? '#fff' : '#374151')};
   transition: all 0.2s ease;
