@@ -1,4 +1,5 @@
 import { Service } from '@/pages/shared/entities/Service';
+import { getCategoryImage, ImageKey } from '@/pages/shared/utils/getCategoryImage';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -11,7 +12,7 @@ interface IItensListProps {
 const ProductItem = ({ data }: { data: Service }) => {
     return (
         <div className="max-w-sm rounded overflow-hidden shadow-lg item-product">
-            <img className="w-full h-24 px-1 product-image" src="/images/product-image-example.png" />
+            <img className="w-full h-24 px-1 product-image" src={getCategoryImage(data?.category as ImageKey) || "/images/product-image-example.png"} />
             <div className="px-6 py-4">
                 <span className="inline-block bg-gray-200 rounded-full text-sm font-semibold text-gray-700">$ {data.servicePrice}</span>
                 <div className="font-bold text-xl mb-2">{data.serviceName}</div>
@@ -44,6 +45,7 @@ const Container = styled.div`
 `
 
 function ItensList({ data, fetchFunction, title }: IItensListProps) {
+    console.log(data)
     return (
         <Container className="mt-6">
             {title && <h2 className="text-2xl font-bold text-gray-800 mb-4">{title}</h2>}

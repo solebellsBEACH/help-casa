@@ -70,11 +70,11 @@ export default function BuscarVagaComponent() {
             handleSearch={getServices}
           />
           <LibComponents.SharedComponents.ItensList data={data} />
-          <LibComponents.SharedComponents.Pagination
+          {/* <LibComponents.SharedComponents.Pagination
             currentPage={currentPage}
             totalPages={totalPages}
             onPageChange={handlePageChange}
-          />
+          /> */}
         </Content>
         <LibComponents.SharedComponents.Footer />
       </div>
