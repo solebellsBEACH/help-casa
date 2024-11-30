@@ -29,7 +29,7 @@ const Services: React.FC = () => {
   };
 
   const handleServiceClick = (serviceId: number) => {
-    router.push(`/servico/outro/${serviceId}`); // Redireciona para a página de detalhes do serviço
+    router.push(`/servico/outro/${serviceId}`);
   };
 
   useEffect(() => {

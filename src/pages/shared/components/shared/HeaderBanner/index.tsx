@@ -34,6 +34,10 @@ const HeaderBanner = ({ bannerData, onClickBanner }: IHeaderProps) => {
       label: "Chat",
       href: "/chat",
     },
+    {
+      label: "Assinaturas",
+      href: "/teladeplanos",
+    },
   ];
 
   const handleTabClick = (href: string) => {
